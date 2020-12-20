@@ -1,0 +1,421 @@
+---
+title: "descriptive_analysis_part1"
+author: "Richard Gong"
+date: "11/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo=FALSE, warning=FALSE}
+library(pacman)
+p_load(stargazer, dplyr, data.table, ggplot2)
+df <- read.csv("../data/p1_athlete_debuts.txt", sep = "\t")
+```
+# Debut Individuals By Year
+```{r}
+df_s_all <- subset(df, is_summer == 1)
+df_s_all <- distinct(df_s_all, Name, Birth, Male, .keep_all = TRUE)
+df_s_fem <- subset(df_s_all, Male == 0)
+df_s_fem <- distinct(df_s_fem, Name, Birth, Male, .keep_all = TRUE)
+df_w_all <- subset(df, is_summer == 0)
+df_w_all <- distinct(df_w_all, Name, Birth, Male, .keep_all = TRUE)
+df_w_fem <- subset(df_w_all, Male == 0)
+df_w_fem <- distinct(df_w_fem, Name, Birth, Male, .keep_all = TRUE)
+indivs_s_all <- aggregate(df_s_all, by=list(Year=df_s_all$Games_Year), FUN=length)
+indivs_s_all <- select(indivs_s_all, Year, Name)
+indivs_s_fem <- aggregate(df_s_fem, by=list(Year=df_s_fem$Games_Year), FUN=length)
+indivs_s_fem <- select(indivs_s_fem, Year, Name)
+indivs_w_all <- aggregate(df_w_all, by=list(Year=df_w_all$Games_Year), FUN=length)
+indivs_w_all <- select(indivs_w_all, Year, Name)
+indivs_w_fem <- aggregate(df_w_fem, by=list(Year=df_w_fem$Games_Year), FUN=length)
+indivs_w_fem <- select(indivs_w_fem, Year, Name)
+ggplot() +
+  xlab("Year") + ylab("Debut Athletes") +
+  scale_x_continuous(breaks = round(seq(min(df$Games_Year), max(df$Games_Year), by = 8),1)) + 
+  geom_line(data=indivs_s_all, aes(x=Year, y=Name, color="Summer All")) + 
+  geom_line(data=indivs_s_fem, aes(x=Year, y=Name, color="Summer Female"), linetype=2) + 
+  geom_line(data=indivs_w_all, aes(x=Year, y=Name, color="Winter All")) + 
+  geom_line(data=indivs_w_fem, aes(x=Year, y=Name, color="Winter Female"),  linetype=2) + 
+  geom_point(data=indivs_s_all, aes(x=Year, y=Name), color = "darkred", size = 0.9) + 
+  geom_point(data=indivs_s_fem, aes(x=Year, y=Name), color = "darkred", size = 0.9) + 
+  geom_point(data=indivs_w_all, aes(x=Year, y=Name), color = "steelblue", size = 0.9) + 
+  geom_point(data=indivs_w_fem, aes(x=Year, y=Name), color = "steelblue", size = 0.9) +
+  scale_colour_manual("", 
+                      breaks = c("Summer All", "Summer Female",
+                                 "Winter All", "Winter Female"),
+                      values = c("darkred", "darkred", "steelblue", "steelblue"),
+                      guide = guide_legend(override.aes=list(linetype=c(1,2,1,2))))
+ggsave("images/p1_debuts.png")
+```
+# Full sample descriptive statistics
+```{r}
+df_m2 <- subset(df, Best_Indiv_Marg == -2)
+df_m1 <- subset(df, Best_Indiv_Marg == -1)
+df_0 <- subset(df, Best_Indiv_Marg == 0)
+df_p1 <- subset(df, Best_Indiv_Marg == 1)
+df_p2 <- subset(df, Best_Indiv_Marg == 2)
+tab1 <- data.frame(c(), c(), c(), c(), c())
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Olympics), mean(df_m1$Future_Olympics),
+                      mean(df_0$Future_Olympics), mean(df_p1$Future_Olympics),
+                      mean(df_p2$Future_Olympics)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Olympics), sd(df_m1$Future_Olympics),
+                      sd(df_0$Future_Olympics), sd(df_p1$Future_Olympics),
+                      sd(df_p2$Future_Olympics)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Medals), mean(df_m1$Future_Medals),
+                      mean(df_0$Future_Medals), mean(df_p1$Future_Medals),
+                      mean(df_p2$Future_Medals)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Medals), sd(df_m1$Future_Medals),
+                      sd(df_0$Future_Medals), sd(df_p1$Future_Medals),
+                      sd(df_p2$Future_Medals)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Golds), mean(df_m1$Future_Golds),
+                      mean(df_0$Future_Golds), mean(df_p1$Future_Golds),
+                      mean(df_p2$Future_Golds)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Golds), sd(df_m1$Future_Golds),
+                      sd(df_0$Future_Golds), sd(df_p1$Future_Golds),
+                      sd(df_p2$Future_Golds)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Age), mean(df_m1$Age),
+                      mean(df_0$Age), mean(df_p1$Age),
+                      mean(df_p2$Age)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Age), sd(df_m1$Age),
+                      sd(df_0$Age), sd(df_p1$Age),
+                      sd(df_p2$Age)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Events), mean(df_m1$Events),
+                      mean(df_0$Events), mean(df_p1$Events),
+                      mean(df_p2$Events)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Events), sd(df_m1$Events),
+                      sd(df_0$Events), sd(df_p1$Events),
+                      sd(df_p2$Events)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Team_Event), mean(df_m1$Team_Event),
+                      mean(df_0$Team_Event), mean(df_p1$Team_Event),
+                      mean(df_p2$Team_Event)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Team_Event), sd(df_m1$Team_Event),
+                      sd(df_0$Team_Event), sd(df_p1$Team_Event),
+                      sd(df_p2$Team_Event)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Male), mean(df_m1$Male),
+                      mean(df_0$Male), mean(df_p1$Male),
+                      mean(df_p2$Male)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Male), sd(df_m1$Male),
+                      sd(df_0$Male), sd(df_p1$Male),
+                      sd(df_p2$Male)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$is_summer), mean(df_m1$is_summer),
+                      mean(df_0$is_summer), mean(df_p1$is_summer),
+                      mean(df_p2$is_summer)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$is_summer), sd(df_m1$is_summer),
+                      sd(df_0$is_summer), sd(df_p1$is_summer),
+                      sd(df_p2$is_summer)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Same), mean(df_m1$Future_Home_Same),
+                      mean(df_0$Future_Home_Same), mean(df_p1$Future_Home_Same),
+                      mean(df_p2$Future_Home_Same)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Same), sd(df_m1$Future_Home_Same),
+                      sd(df_0$Future_Home_Same), sd(df_p1$Future_Home_Same),
+                      sd(df_p2$Future_Home_Same)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Diff), mean(df_m1$Future_Home_Diff),
+                      mean(df_0$Future_Home_Diff), mean(df_p1$Future_Home_Diff),
+                      mean(df_p2$Future_Home_Diff)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Diff), sd(df_m1$Future_Home_Diff),
+                      sd(df_0$Future_Home_Diff), sd(df_p1$Future_Home_Diff),
+                      sd(df_p2$Future_Home_Diff)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, c("","","","",""))
+tab1 <- rbind(tab1, c(uniqueN(df_m2, by = c("Name", "Birth", "Male")), uniqueN(df_m1, by = c("Name", "Birth", "Male")), uniqueN(df_0, by = c("Name", "Birth", "Male")), uniqueN(df_p1, by = c("Name", "Birth", "Male")), uniqueN(df_p2, by = c("Name", "Birth", "Male"))))
+colnames(tab1) <- c("Distance -2","Distance -1","Distance 0", "Distance 1", "Distance 2")
+rownames(tab1) <- c("Future Olympics", "",
+                    "Future Medals", " ",
+                    "Future Gold Medals", "  ",
+                    "Age", "   ",
+                    "Events", "    ",
+                    "Team Event Dummy", "     ",
+                    "Male Dummy", "      ",
+                    "Summer Dummy", "       ",
+                    "Future Home Same", "        ",
+                    "Future Home Different", "         ",
+                     "          ", "Observations")
+stargazer(tab1, style="qje", title="Variable Means By Marginal Medal Distance", 
+          notes=c("\\footnotesize Data for individual event athletes in debut Olympics. Marginal medal distance is taken as a maximum",
+                  "\\footnotesize over all individual results for an athlete who competes in multiple events. Events refers to the", 
+                  "\\footnotesize total number of events an athlete competes in during their debut games. This includes team events", 
+                  "\\footnotesize if they also happen to compete in them. Team Event Dummy is set to one if an athlete participates", 
+                  "\\footnotesize in at least one team event in addition to their individual events. Future Home Same and", 
+                  "\\footnotesize Future Home Different count the number of Olympics in next 12 years of same (different) season", 
+                  "\\footnotesize hosted by the athlete's home country."), 
+          font.size = "small", summary=FALSE, header = FALSE, out = "tables/p1_descriptive.tex")
+```
+# Subsample descriptive statistics
+```{r}
+df_pre_ww2 <- subset(df, Games_Year <= 1936)
+df_m2 <- subset(df_pre_ww2, Best_Indiv_Marg == -2)
+df_m1 <- subset(df_pre_ww2, Best_Indiv_Marg == -1)
+df_0 <- subset(df_pre_ww2, Best_Indiv_Marg == 0)
+df_p1 <- subset(df_pre_ww2, Best_Indiv_Marg == 1)
+df_p2 <- subset(df_pre_ww2, Best_Indiv_Marg == 2)
+tab1 <- data.frame(c(), c(), c(), c(), c())
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Olympics), mean(df_m1$Future_Olympics),
+                      mean(df_0$Future_Olympics), mean(df_p1$Future_Olympics),
+                      mean(df_p2$Future_Olympics)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Olympics), sd(df_m1$Future_Olympics),
+                      sd(df_0$Future_Olympics), sd(df_p1$Future_Olympics),
+                      sd(df_p2$Future_Olympics)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Medals), mean(df_m1$Future_Medals),
+                      mean(df_0$Future_Medals), mean(df_p1$Future_Medals),
+                      mean(df_p2$Future_Medals)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Medals), sd(df_m1$Future_Medals),
+                      sd(df_0$Future_Medals), sd(df_p1$Future_Medals),
+                      sd(df_p2$Future_Medals)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Golds), mean(df_m1$Future_Golds),
+                      mean(df_0$Future_Golds), mean(df_p1$Future_Golds),
+                      mean(df_p2$Future_Golds)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Golds), sd(df_m1$Future_Golds),
+                      sd(df_0$Future_Golds), sd(df_p1$Future_Golds),
+                      sd(df_p2$Future_Golds)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Age), mean(df_m1$Age),
+                      mean(df_0$Age), mean(df_p1$Age),
+                      mean(df_p2$Age)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Age), sd(df_m1$Age),
+                      sd(df_0$Age), sd(df_p1$Age),
+                      sd(df_p2$Age)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Events), mean(df_m1$Events),
+                      mean(df_0$Events), mean(df_p1$Events),
+                      mean(df_p2$Events)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Events), sd(df_m1$Events),
+                      sd(df_0$Events), sd(df_p1$Events),
+                      sd(df_p2$Events)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Team_Event), mean(df_m1$Team_Event),
+                      mean(df_0$Team_Event), mean(df_p1$Team_Event),
+                      mean(df_p2$Team_Event)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Team_Event), sd(df_m1$Team_Event),
+                      sd(df_0$Team_Event), sd(df_p1$Team_Event),
+                      sd(df_p2$Team_Event)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Male), mean(df_m1$Male),
+                      mean(df_0$Male), mean(df_p1$Male),
+                      mean(df_p2$Male)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Male), sd(df_m1$Male),
+                      sd(df_0$Male), sd(df_p1$Male),
+                      sd(df_p2$Male)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$is_summer), mean(df_m1$is_summer),
+                      mean(df_0$is_summer), mean(df_p1$is_summer),
+                      mean(df_p2$is_summer)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$is_summer), sd(df_m1$is_summer),
+                      sd(df_0$is_summer), sd(df_p1$is_summer),
+                      sd(df_p2$is_summer)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Same), mean(df_m1$Future_Home_Same),
+                      mean(df_0$Future_Home_Same), mean(df_p1$Future_Home_Same),
+                      mean(df_p2$Future_Home_Same)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Same), sd(df_m1$Future_Home_Same),
+                      sd(df_0$Future_Home_Same), sd(df_p1$Future_Home_Same),
+                      sd(df_p2$Future_Home_Same)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Diff), mean(df_m1$Future_Home_Diff),
+                      mean(df_0$Future_Home_Diff), mean(df_p1$Future_Home_Diff),
+                      mean(df_p2$Future_Home_Diff)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Diff), sd(df_m1$Future_Home_Diff),
+                      sd(df_0$Future_Home_Diff), sd(df_p1$Future_Home_Diff),
+                      sd(df_p2$Future_Home_Diff)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, c("","","","",""))
+tab1 <- rbind(tab1, c(uniqueN(df_m2, by = c("Name", "Birth", "Male")), uniqueN(df_m1, by = c("Name", "Birth", "Male")), uniqueN(df_0, by = c("Name", "Birth", "Male")), uniqueN(df_p1, by = c("Name", "Birth", "Male")), uniqueN(df_p2, by = c("Name", "Birth", "Male"))))
+colnames(tab1) <- c("Distance -2","Distance -1","Distance 0", "Distance 1", "Distance 2")
+rownames(tab1) <- c("Future Olympics", "",
+                    "Future Medals", " ",
+                    "Future Gold Medals", "  ",
+                    "Age", "   ",
+                    "Events", "    ",
+                    "Team Event Dummy", "     ",
+                    "Male Dummy", "      ",
+                    "Summer Dummy", "       ",
+                    "Future Home Same", "        ",
+                    "Future Home Different", "         ",
+                     "          ", "Observations")
+stargazer(tab1, style="qje", title="Before WWII: 1896-1936 Variable Means By Marginal Medal Distance", 
+          notes=c("\\footnotesize Data for individual event athletes in debut Olympics. Marginal medal distance is taken as a maximum",
+                  "\\footnotesize over all individual results for an athlete who competes in multiple events. Events refers to the", 
+                  "\\footnotesize total number of events an athlete competes in during their debut games. This includes team events", 
+                  "\\footnotesize if they also happen to compete in them. Team Event Dummy is set to one if an athlete participates", 
+                  "\\footnotesize in at least one team event in addition to their individual events. Future Home Same and", 
+                  "\\footnotesize Future Home Different count the number of Olympics in next 12 years of same (different) season", 
+                  "\\footnotesize hosted by the athlete's home country."), 
+          font.size = "small", summary=FALSE, header = FALSE, out = "tables/p1_descriptive_bww2.tex")
+```
+```{r}
+df_post_ww2 <- subset(df, Games_Year > 1936 & Games_Year <= 1992)
+df_m2 <- subset(df_post_ww2, Best_Indiv_Marg == -2)
+df_m1 <- subset(df_post_ww2, Best_Indiv_Marg == -1)
+df_0 <- subset(df_post_ww2, Best_Indiv_Marg == 0)
+df_p1 <- subset(df_post_ww2, Best_Indiv_Marg == 1)
+df_p2 <- subset(df_post_ww2, Best_Indiv_Marg == 2)
+tab1 <- data.frame(c(), c(), c(), c(), c())
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Olympics), mean(df_m1$Future_Olympics),
+                      mean(df_0$Future_Olympics), mean(df_p1$Future_Olympics),
+                      mean(df_p2$Future_Olympics)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Olympics), sd(df_m1$Future_Olympics),
+                      sd(df_0$Future_Olympics), sd(df_p1$Future_Olympics),
+                      sd(df_p2$Future_Olympics)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Medals), mean(df_m1$Future_Medals),
+                      mean(df_0$Future_Medals), mean(df_p1$Future_Medals),
+                      mean(df_p2$Future_Medals)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Medals), sd(df_m1$Future_Medals),
+                      sd(df_0$Future_Medals), sd(df_p1$Future_Medals),
+                      sd(df_p2$Future_Medals)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Golds), mean(df_m1$Future_Golds),
+                      mean(df_0$Future_Golds), mean(df_p1$Future_Golds),
+                      mean(df_p2$Future_Golds)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Golds), sd(df_m1$Future_Golds),
+                      sd(df_0$Future_Golds), sd(df_p1$Future_Golds),
+                      sd(df_p2$Future_Golds)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Age), mean(df_m1$Age),
+                      mean(df_0$Age), mean(df_p1$Age),
+                      mean(df_p2$Age)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Age), sd(df_m1$Age),
+                      sd(df_0$Age), sd(df_p1$Age),
+                      sd(df_p2$Age)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Events), mean(df_m1$Events),
+                      mean(df_0$Events), mean(df_p1$Events),
+                      mean(df_p2$Events)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Events), sd(df_m1$Events),
+                      sd(df_0$Events), sd(df_p1$Events),
+                      sd(df_p2$Events)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Team_Event), mean(df_m1$Team_Event),
+                      mean(df_0$Team_Event), mean(df_p1$Team_Event),
+                      mean(df_p2$Team_Event)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Team_Event), sd(df_m1$Team_Event),
+                      sd(df_0$Team_Event), sd(df_p1$Team_Event),
+                      sd(df_p2$Team_Event)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Male), mean(df_m1$Male),
+                      mean(df_0$Male), mean(df_p1$Male),
+                      mean(df_p2$Male)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Male), sd(df_m1$Male),
+                      sd(df_0$Male), sd(df_p1$Male),
+                      sd(df_p2$Male)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$is_summer), mean(df_m1$is_summer),
+                      mean(df_0$is_summer), mean(df_p1$is_summer),
+                      mean(df_p2$is_summer)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$is_summer), sd(df_m1$is_summer),
+                      sd(df_0$is_summer), sd(df_p1$is_summer),
+                      sd(df_p2$is_summer)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Same), mean(df_m1$Future_Home_Same),
+                      mean(df_0$Future_Home_Same), mean(df_p1$Future_Home_Same),
+                      mean(df_p2$Future_Home_Same)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Same), sd(df_m1$Future_Home_Same),
+                      sd(df_0$Future_Home_Same), sd(df_p1$Future_Home_Same),
+                      sd(df_p2$Future_Home_Same)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Diff), mean(df_m1$Future_Home_Diff),
+                      mean(df_0$Future_Home_Diff), mean(df_p1$Future_Home_Diff),
+                      mean(df_p2$Future_Home_Diff)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Diff), sd(df_m1$Future_Home_Diff),
+                      sd(df_0$Future_Home_Diff), sd(df_p1$Future_Home_Diff),
+                      sd(df_p2$Future_Home_Diff)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, c("","","","",""))
+tab1 <- rbind(tab1, c(uniqueN(df_m2, by = c("Name", "Birth", "Male")), uniqueN(df_m1, by = c("Name", "Birth", "Male")), uniqueN(df_0, by = c("Name", "Birth", "Male")), uniqueN(df_p1, by = c("Name", "Birth", "Male")), uniqueN(df_p2, by = c("Name", "Birth", "Male"))))
+colnames(tab1) <- c("Distance -2","Distance -1","Distance 0", "Distance 1", "Distance 2")
+rownames(tab1) <- c("Future Olympics", "",
+                    "Future Medals", " ",
+                    "Future Gold Medals", "  ",
+                    "Age", "   ",
+                    "Events", "    ",
+                    "Team Event Dummy", "     ",
+                    "Male Dummy", "      ",
+                    "Summer Dummy", "       ",
+                    "Future Home Same", "        ",
+                    "Future Home Different", "         ",
+                     "          ", "Observations")
+stargazer(tab1, style="qje", title="After WWII: 1948-1992 Variable Means By Marginal Medal Distance", 
+          notes=c("\\footnotesize Data for individual event athletes in debut Olympics. Marginal medal distance is taken as a maximum",
+                  "\\footnotesize over all individual results for an athlete who competes in multiple events. Events refers to the", 
+                  "\\footnotesize total number of events an athlete competes in during their debut games. This includes team events", 
+                  "\\footnotesize if they also happen to compete in them. Team Event Dummy is set to one if an athlete participates", 
+                  "\\footnotesize in at least one team event in addition to their individual events. Future Home Same and", 
+                  "\\footnotesize Future Home Different count the number of Olympics in next 12 years of same (different) season", 
+                  "\\footnotesize hosted by the athlete's home country."), 
+          font.size = "small", summary=FALSE, header = FALSE, out = "tables/p1_descriptive_aww2.tex")
+```
+```{r}
+df_stag <- subset(df, Games_Year > 1992)
+df_m2 <- subset(df_stag, Best_Indiv_Marg == -2)
+df_m1 <- subset(df_stag, Best_Indiv_Marg == -1)
+df_0 <- subset(df_stag, Best_Indiv_Marg == 0)
+df_p1 <- subset(df_stag, Best_Indiv_Marg == 1)
+df_p2 <- subset(df_stag, Best_Indiv_Marg == 2)
+tab1 <- data.frame(c(), c(), c(), c(), c())
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Olympics), mean(df_m1$Future_Olympics),
+                      mean(df_0$Future_Olympics), mean(df_p1$Future_Olympics),
+                      mean(df_p2$Future_Olympics)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Olympics), sd(df_m1$Future_Olympics),
+                      sd(df_0$Future_Olympics), sd(df_p1$Future_Olympics),
+                      sd(df_p2$Future_Olympics)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Medals), mean(df_m1$Future_Medals),
+                      mean(df_0$Future_Medals), mean(df_p1$Future_Medals),
+                      mean(df_p2$Future_Medals)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Medals), sd(df_m1$Future_Medals),
+                      sd(df_0$Future_Medals), sd(df_p1$Future_Medals),
+                      sd(df_p2$Future_Medals)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Golds), mean(df_m1$Future_Golds),
+                      mean(df_0$Future_Golds), mean(df_p1$Future_Golds),
+                      mean(df_p2$Future_Golds)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Golds), sd(df_m1$Future_Golds),
+                      sd(df_0$Future_Golds), sd(df_p1$Future_Golds),
+                      sd(df_p2$Future_Golds)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Age), mean(df_m1$Age),
+                      mean(df_0$Age), mean(df_p1$Age),
+                      mean(df_p2$Age)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Age), sd(df_m1$Age),
+                      sd(df_0$Age), sd(df_p1$Age),
+                      sd(df_p2$Age)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Events), mean(df_m1$Events),
+                      mean(df_0$Events), mean(df_p1$Events),
+                      mean(df_p2$Events)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Events), sd(df_m1$Events),
+                      sd(df_0$Events), sd(df_p1$Events),
+                      sd(df_p2$Events)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Team_Event), mean(df_m1$Team_Event),
+                      mean(df_0$Team_Event), mean(df_p1$Team_Event),
+                      mean(df_p2$Team_Event)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Team_Event), sd(df_m1$Team_Event),
+                      sd(df_0$Team_Event), sd(df_p1$Team_Event),
+                      sd(df_p2$Team_Event)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Male), mean(df_m1$Male),
+                      mean(df_0$Male), mean(df_p1$Male),
+                      mean(df_p2$Male)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Male), sd(df_m1$Male),
+                      sd(df_0$Male), sd(df_p1$Male),
+                      sd(df_p2$Male)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$is_summer), mean(df_m1$is_summer),
+                      mean(df_0$is_summer), mean(df_p1$is_summer),
+                      mean(df_p2$is_summer)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$is_summer), sd(df_m1$is_summer),
+                      sd(df_0$is_summer), sd(df_p1$is_summer),
+                      sd(df_p2$is_summer)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Same), mean(df_m1$Future_Home_Same),
+                      mean(df_0$Future_Home_Same), mean(df_p1$Future_Home_Same),
+                      mean(df_p2$Future_Home_Same)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Same), sd(df_m1$Future_Home_Same),
+                      sd(df_0$Future_Home_Same), sd(df_p1$Future_Home_Same),
+                      sd(df_p2$Future_Home_Same)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, lapply(c(mean(df_m2$Future_Home_Diff), mean(df_m1$Future_Home_Diff),
+                      mean(df_0$Future_Home_Diff), mean(df_p1$Future_Home_Diff),
+                      mean(df_p2$Future_Home_Diff)), function(x) signif(x, digits = 3)))
+tab1 <- rbind(tab1, lapply(c(sd(df_m2$Future_Home_Diff), sd(df_m1$Future_Home_Diff),
+                      sd(df_0$Future_Home_Diff), sd(df_p1$Future_Home_Diff),
+                      sd(df_p2$Future_Home_Diff)), function(x) paste0("(", paste0(signif(x, digits = 3), ")"))))
+tab1 <- rbind(tab1, c("","","","",""))
+tab1 <- rbind(tab1, c(uniqueN(df_m2, by = c("Name", "Birth", "Male")), uniqueN(df_m1, by = c("Name", "Birth", "Male")), uniqueN(df_0, by = c("Name", "Birth", "Male")), uniqueN(df_p1, by = c("Name", "Birth", "Male")), uniqueN(df_p2, by = c("Name", "Birth", "Male"))))
+colnames(tab1) <- c("Distance -2","Distance -1","Distance 0", "Distance 1", "Distance 2")
+rownames(tab1) <- c("Future Olympics", "",
+                    "Future Medals", " ",
+                    "Future Gold Medals", "  ",
+                    "Age", "   ",
+                    "Events", "    ",
+                    "Team Event Dummy", "     ",
+                    "Male Dummy", "      ",
+                    "Summer Dummy", "       ",
+                    "Future Home Same", "        ",
+                    "Future Home Different", "         ",
+                     "          ", "Observations")
+stargazer(tab1, style="qje", title="Staggered: 1994-2018 Variable Means By Marginal Medal Distance", 
+          notes=c("\\footnotesize Data for individual event athletes in debut Olympics. Marginal medal distance is taken as a maximum",
+                  "\\footnotesize over all individual results for an athlete who competes in multiple events. Events refers to the", 
+                  "\\footnotesize total number of events an athlete competes in during their debut games. This includes team events", 
+                  "\\footnotesize if they also happen to compete in them. Team Event Dummy is set to one if an athlete participates", 
+                  "\\footnotesize in at least one team event in addition to their individual events. Future Home Same and", 
+                  "\\footnotesize Future Home Different count the number of Olympics in next 12 years of same (different) season", 
+                  "\\footnotesize hosted by the athlete's home country."), 
+          font.size = "small", summary=FALSE, header = FALSE, out = "tables/p1_descriptive_stag.tex")
+```
+

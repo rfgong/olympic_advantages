@@ -1,0 +1,363 @@
+---
+title: "subjective_objective_part2"
+author: "Richard Gong"
+date: "12/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo=FALSE, warning=FALSE}
+library(pacman)
+p_load(stargazer, dplyr, sandwich, car)
+set.seed(42)
+df_s <- read.csv("../data/p2_host_cohorts_sub.txt", sep = "\t")
+df_s <- subset(df_s, !is.na(Distance))
+df_o <- read.csv("../data/p2_host_cohorts_obj.txt", sep = "\t")
+df_o <- subset(df_o, !is.na(Distance))
+# Restrict to Distances -2, -1, 0, 1, 2
+df_s <- subset(df_s, Distance >= -2 & Distance <= 2)
+df_s$Cohort_Country.f <- factor(df_s$Cohort_Country)
+df_s$Distance.f <- factor(df_s$Distance)
+df_o <- subset(df_o, Distance >= -2 & Distance <= 2)
+df_o$Cohort_Country.f <- factor(df_o$Cohort_Country)
+df_o$Distance.f <- factor(df_o$Distance)
+```
+# Subjective Events Drop Sharp Decrease Games Post-WW2
+```{r}
+df_s$G1_Year_Summer <- paste0(df_s$G1_Year, df_s$is_summer)
+df_s$G2_Year_Summer <- paste0(df_s$G2_Year, df_s$is_summer)
+drop <- c("19321", "19320", "19561", "19761", "19801")
+df_drop <- subset(df_s, !(df_s$G1_Year_Summer %in% drop) & !(df_s$G2_Year_Summer %in% drop))
+df_drop_post <- subset(df_drop, df_drop$G1_Year >= 1952)
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Medals_Per_Athlete ~  Distance.f + is_summer + Male_Ratio + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Medals_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Medals_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Subjective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).", 
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_ma_22_drop_1952_sub.tex")
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Medals_Per_Event ~  Distance.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Medals_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Medals_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Subjective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).", 
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_me_22_drop_1952_sub.tex")
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Golds_Per_Athlete ~  Distance.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Golds_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Golds_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Subjective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).",
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_ga_22_drop_1952_sub.tex")
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Golds_Per_Event ~  Distance.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Golds_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Golds_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Subjective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).",
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_ge_22_drop_1952_sub.tex")
+```
+# Objective Events Drop Sharp Decrease Games Post-WW2
+```{r}
+df_o$G1_Year_Summer <- paste0(df_o$G1_Year, df_o$is_summer)
+df_o$G2_Year_Summer <- paste0(df_o$G2_Year, df_o$is_summer)
+drop <- c("19321", "19320", "19561", "19761", "19801")
+df_drop <- subset(df_o, !(df_o$G1_Year_Summer %in% drop) & !(df_o$G2_Year_Summer %in% drop))
+df_drop_post <- subset(df_drop, df_drop$G1_Year >= 1952)
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Medals_Per_Athlete ~  Distance.f + is_summer + Male_Ratio + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Medals_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Medals_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Objective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).", 
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_ma_22_drop_1952_obj.tex")
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Medals_Per_Event ~  Distance.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Medals_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Medals_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Objective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).", 
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_me_22_drop_1952_obj.tex")
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Golds_Per_Athlete ~  Distance.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Golds_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Golds_Per_Athlete ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Objective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).",
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_ga_22_drop_1952_obj.tex")
+```
+```{r, warning=FALSE}
+# Weighted No Fixed Effects
+reg_nocf <- lm(Change_Golds_Per_Event ~  Distance.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_nocf, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_nocf <- sqrt(diag(cov))
+cov <- vcovBS(reg_nocf, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_nocf_b <- sqrt(diag(cov))
+# Weighted
+reg_w <- lm(Change_Golds_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, weights = Cohort_Size, data = df_drop_post)
+cov <- vcovCL(reg_w, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_w <- sqrt(diag(cov))
+cov <- vcovBS(reg_w, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_w_b <- sqrt(diag(cov))
+# Unweighted
+reg_uw <- lm(Change_Golds_Per_Event ~  Distance.f + Cohort_Country.f + is_summer + Male_Ratio  + G1_Mean_Age + G1_Mean_Age_Sq, data = df_drop_post)
+cov <- vcovCL(reg_uw, cluster = ~ Cohort_Country, type = "HC1")
+robust_se_uw <- sqrt(diag(cov))
+cov <- vcovBS(reg_uw, cluster = ~ Cohort_Country, type = "wild", R = 1000)
+robust_se_uw_b <- sqrt(diag(cov))
+stargazer(reg_nocf, reg_nocf, reg_w, 
+          reg_w, reg_uw, reg_uw,
+          se = list(robust_se_nocf, robust_se_nocf_b, robust_se_w, 
+                    robust_se_w_b, robust_se_uw, robust_se_uw_b),
+          type="latex", style="qje", 
+          title="Objective Event Home Field Effect", 
+          covariate.labels=c("Distance -1","Distance 0", "Distance 1", "Distance 2", "Summer", "MaleRatio", "MeanAge", "MeanAgeSquared"),
+          add.lines=list(rep("",10), c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}')),
+          notes=c("t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are",
+                  "unweighted. Standard errors for odd columns are clustered at the Country level.",
+                  "Standard errors for even columns are wild bootstrap, using Country blocks and",
+                  "1000 repetitions. There are 20 Country clusters. Critical values for the t-distribution",
+                  "with 19 degrees of freedom: 1.73 (10\\% level), 2.09 (5\\% level), 2.86 (1\\% level).",
+                  "Games with major declines in attendance dropped. Distance [-2, 2] Years 1952+"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Cohort_Country.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"),
+          report="vct", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          header = FALSE, out="tables/p2_ge_22_drop_1952_obj.tex")
+```
+

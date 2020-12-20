@@ -1,0 +1,658 @@
+---
+title: "probability_estimation_part1"
+author: "Richard Gong"
+date: "11/22/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo=FALSE, warning=FALSE}
+library(pacman)
+p_load(stargazer, dplyr, sandwich, car, DescTools, margins)
+df <- read.csv("../data/p1_athlete_debuts.txt", sep = "\t")
+```
+# LPM Medal Effect (-1 vs. 0)
+```{r, warning=FALSE}
+df_marg <- subset(df, Best_Indiv_Marg == -1 | Best_Indiv_Marg == 0)
+df_marg$Country.f <- factor(df_marg$Country)
+df_marg$Games_Year.f <- factor(df_marg$Games_Year)
+df_marg$Marginal_Medal <- df_marg$Best_Indiv_Marg + 1
+df_marg$Marginal_MedalXMale <- df_marg$Marginal_Medal * df_marg$Male
+df_marg$Attended_Future_Olympics <- if_else(df_marg$Future_Olympics > 0, 1, 0)
+df_marg$Earned_Future_Medal <- if_else(df_marg$Future_Medals > 0, 1, 0)
+df_marg$Earned_Future_Gold <- if_else(df_marg$Future_Golds > 0, 1, 0)
+# Attended Future Olympics as outcome
+reg_fo_nofe <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg)
+cov <- vcovCL(reg_fo_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_nocfe <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg)
+cov <- vcovCL(reg_fo_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_all <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg)
+cov <- vcovCL(reg_fo_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_all <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Medal as outcome
+reg_fm_nofe <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg)
+cov <- vcovCL(reg_fm_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_nocfe <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg)
+cov <- vcovCL(reg_fm_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_all <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg)
+cov <- vcovCL(reg_fm_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_all <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Gold Medal as outcome
+reg_fg_nofe <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg)
+cov <- vcovCL(reg_fg_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_nocfe <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg)
+cov <- vcovCL(reg_fg_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_all <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg)
+cov <- vcovCL(reg_fg_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_all <- round(tst$`Pr(>F)`[2], digits = 3)
+stargazer(reg_fo_nofe, reg_fo_nocfe, reg_fo_all, 
+          reg_fm_nofe, reg_fm_nocfe, reg_fm_all,
+          reg_fg_nofe, reg_fg_nocfe, reg_fg_all,
+          se = list(robust_se_fo_nofe, robust_se_fo_nocfe, robust_se_fo_all, 
+                    robust_se_fm_nofe, robust_se_fm_nocfe, robust_se_fm_all,
+                    robust_se_fg_nofe, robust_se_fg_nocfe, robust_se_fg_all),
+          type="latex", style="qje", 
+          title="Linear Probability Medal Effect (-1 vs. 0)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          add.lines=list(rep("",10), 
+                         c('Year fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'), 
+                         c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}'),
+                         c('F-test: MarginalMedal+D = 0', paste0("\\multicolumn{1}{c}{",fp_fo_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_all,"}"),
+                           paste0("\\multicolumn{1}{c}{",fp_fm_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_all,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_all,"}"))),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.", "F-test p-value reported."),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Country.f", "Games_Year.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"), 
+          report="vc*s", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_lpm10.tex")
+```
+# LPM Medal Effect (-1 vs. 1)
+```{r, warning=FALSE}
+df_marg_1 <- subset(df, Best_Indiv_Marg == -1 | Best_Indiv_Marg == 1)
+df_marg_1$Country.f <- factor(df_marg_1$Country)
+df_marg_1$Games_Year.f <- factor(df_marg_1$Games_Year)
+df_marg_1$Marginal_Medal <- (df_marg_1$Best_Indiv_Marg + 1) / 2
+df_marg_1$Marginal_MedalXMale <- df_marg_1$Marginal_Medal * df_marg_1$Male
+df_marg_1$Attended_Future_Olympics <- if_else(df_marg_1$Future_Olympics > 0, 1, 0)
+df_marg_1$Earned_Future_Medal <- if_else(df_marg_1$Future_Medals > 0, 1, 0)
+df_marg_1$Earned_Future_Gold <- if_else(df_marg_1$Future_Golds > 0, 1, 0)
+# Attended Future Olympics as outcome
+reg_fo_nofe <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg_1)
+cov <- vcovCL(reg_fo_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_nocfe <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg_1)
+cov <- vcovCL(reg_fo_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_all <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_1)
+cov <- vcovCL(reg_fo_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_all <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Medal as outcome
+reg_fm_nofe <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg_1)
+cov <- vcovCL(reg_fm_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_nocfe <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg_1)
+cov <- vcovCL(reg_fm_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_all <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_1)
+cov <- vcovCL(reg_fm_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_all <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Gold Medal as outcome
+reg_fg_nofe <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg_1)
+cov <- vcovCL(reg_fg_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_nocfe <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg_1)
+cov <- vcovCL(reg_fg_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_all <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_1)
+cov <- vcovCL(reg_fg_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_all <- round(tst$`Pr(>F)`[2], digits = 3)
+stargazer(reg_fo_nofe, reg_fo_nocfe, reg_fo_all, 
+          reg_fm_nofe, reg_fm_nocfe, reg_fm_all,
+          reg_fg_nofe, reg_fg_nocfe, reg_fg_all,
+          se = list(robust_se_fo_nofe, robust_se_fo_nocfe, robust_se_fo_all, 
+                    robust_se_fm_nofe, robust_se_fm_nocfe, robust_se_fm_all,
+                    robust_se_fg_nofe, robust_se_fg_nocfe, robust_se_fg_all),
+          type="latex", style="qje", 
+          title="Linear Probability Medal Effect (-1 vs. 1)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          add.lines=list(rep("",10), 
+                         c('Year fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'), 
+                         c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}'),
+                         c('F-test: MarginalMedal+D = 0', paste0("\\multicolumn{1}{c}{",fp_fo_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_all,"}"),
+                           paste0("\\multicolumn{1}{c}{",fp_fm_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_all,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_all,"}"))),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.", "F-test p-value reported."),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Country.f", "Games_Year.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"), 
+          report="vc*s", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_lpm11.tex")
+```
+# LPM Medal Effect (-1 vs. 2)
+```{r, warning=FALSE}
+df_marg_2 <- subset(df, Best_Indiv_Marg == -1 | Best_Indiv_Marg == 2)
+df_marg_2$Country.f <- factor(df_marg_2$Country)
+df_marg_2$Games_Year.f <- factor(df_marg_2$Games_Year)
+df_marg_2$Marginal_Medal <- (df_marg_2$Best_Indiv_Marg + 1) / 3
+df_marg_2$Marginal_MedalXMale <- df_marg_2$Marginal_Medal * df_marg_2$Male
+df_marg_2$Attended_Future_Olympics <- if_else(df_marg_2$Future_Olympics > 0, 1, 0)
+df_marg_2$Earned_Future_Medal <- if_else(df_marg_2$Future_Medals > 0, 1, 0)
+df_marg_2$Earned_Future_Gold <- if_else(df_marg_2$Future_Golds > 0, 1, 0)
+# Attended Future Olympics as outcome
+reg_fo_nofe <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg_2)
+cov <- vcovCL(reg_fo_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_nocfe <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg_2)
+cov <- vcovCL(reg_fo_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_all <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_2)
+cov <- vcovCL(reg_fo_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_all <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Medal as outcome
+reg_fm_nofe <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg_2)
+cov <- vcovCL(reg_fm_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_nocfe <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg_2)
+cov <- vcovCL(reg_fm_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_all <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_2)
+cov <- vcovCL(reg_fm_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_all <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Gold Medal as outcome
+reg_fg_nofe <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, data = df_marg_2)
+cov <- vcovCL(reg_fg_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nofe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_nocfe <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, data = df_marg_2)
+cov <- vcovCL(reg_fg_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nocfe <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_all <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_2)
+cov <- vcovCL(reg_fg_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_all <- round(tst$`Pr(>F)`[2], digits = 3)
+stargazer(reg_fo_nofe, reg_fo_nocfe, reg_fo_all, 
+          reg_fm_nofe, reg_fm_nocfe, reg_fm_all,
+          reg_fg_nofe, reg_fg_nocfe, reg_fg_all,
+          se = list(robust_se_fo_nofe, robust_se_fo_nocfe, robust_se_fo_all, 
+                    robust_se_fm_nofe, robust_se_fm_nocfe, robust_se_fm_all,
+                    robust_se_fg_nofe, robust_se_fg_nocfe, robust_se_fg_all),
+          type="latex", style="qje", 
+          title="Linear Probability Medal Effect (-1 vs. 2)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          add.lines=list(rep("",10), 
+                         c('Year fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'), 
+                         c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}'),
+                         c('F-test: MarginalMedal+D = 0', paste0("\\multicolumn{1}{c}{",fp_fo_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_all,"}"),
+                           paste0("\\multicolumn{1}{c}{",fp_fm_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_all,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_all,"}"))),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.", "F-test p-value reported."),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Country.f", "Games_Year.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"), 
+          report="vc*s", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_lpm12.tex")
+```
+# Logit Medal Effect (-1 vs. 0)
+```{r, warning=FALSE}
+df_marg <- subset(df, Best_Indiv_Marg == -1 | Best_Indiv_Marg == 0)
+df_marg$Country.f <- factor(df_marg$Country)
+df_marg$Games_Year.f <- factor(df_marg$Games_Year)
+df_marg$Marginal_Medal <- df_marg$Best_Indiv_Marg + 1
+df_marg$Marginal_MedalXMale <- df_marg$Marginal_Medal * df_marg$Male
+df_marg$Attended_Future_Olympics <- if_else(df_marg$Future_Olympics > 0, 1, 0)
+df_marg$Earned_Future_Medal <- if_else(df_marg$Future_Medals > 0, 1, 0)
+df_marg$Earned_Future_Gold <- if_else(df_marg$Future_Golds > 0, 1, 0)
+# Attended Future Olympics as outcome
+reg_fo_nofe <- glm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fo_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nofe <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+reg_fo_nocfe <- glm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fo_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_nocfe <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+reg_fo_all <- glm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fo_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_all <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+# Earned Future Medal as outcome
+reg_fm_nofe <- glm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fm_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nofe <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+reg_fm_nocfe <- glm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fm_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_nocfe <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+reg_fm_all <- glm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fm_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_all <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+# Earned Future Gold Medal as outcome
+reg_fg_nofe <- glm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fg_nofe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nofe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nofe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nofe <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+reg_fg_nocfe <- glm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Games_Year.f, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fg_nocfe, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_nocfe <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_nocfe, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_nocfe <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+reg_fg_all <- glm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, family = "binomial", data = df_marg)
+cov <- vcovCL(reg_fg_all, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_all <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_all, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_all <- round(tst$`Pr(>Chisq)`[2], digits = 3)
+stargazer(reg_fo_nofe, reg_fo_nocfe, reg_fo_all, 
+          reg_fm_nofe, reg_fm_nocfe, reg_fm_all,
+          reg_fg_nofe, reg_fg_nocfe, reg_fg_all,
+          se = list(robust_se_fo_nofe, robust_se_fo_nocfe, robust_se_fo_all, 
+                    robust_se_fm_nofe, robust_se_fm_nocfe, robust_se_fm_all,
+                    robust_se_fg_nofe, robust_se_fg_nocfe, robust_se_fg_all),
+          type="latex", style="qje", 
+          title="Logit Medal Effect (-1 vs. 0)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          add.lines=list(rep("",10), 
+                         c('Year fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'), 
+                         c('Country fixed effects','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{No}','\\multicolumn{1}{c}{Yes}'),
+                         c('Wald-test: MarginalMedal+D = 0', paste0("\\multicolumn{1}{c}{",fp_fo_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_all,"}"),
+                           paste0("\\multicolumn{1}{c}{",fp_fm_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_all,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nofe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_nocfe,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_all,"}")),
+                         c('Adjusted Pseudo R2', 
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fo_nofe, which = "McFaddenAdj"), digits = 3),"}"), 
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fo_nocfe, which = "McFaddenAdj"), digits = 3),"}"),
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fo_all, which = "McFaddenAdj"), digits = 3),"}"), 
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fm_nofe, which = "McFaddenAdj"), digits = 3),"}"),
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fm_nocfe, which = "McFaddenAdj"), digits = 3),"}"),
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fm_all, which = "McFaddenAdj"), digits = 3),"}"), 
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fg_nofe, which = "McFaddenAdj"), digits = 3),"}"),
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fg_nocfe, which = "McFaddenAdj"), digits = 3),"}"), 
+                           paste0("\\multicolumn{1}{c}{",round(PseudoR2(reg_fg_all, which = "McFaddenAdj"), digits = 3),"}"))),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.", "Wald-test p-value reported."),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Country.f", "Games_Year.f" ,"Constant"), 
+          omit.stat=c("LL","aic"), 
+          report="vc*s", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_logit10.tex")
+```
+```{r, warning=FALSE}
+# Average Marginal Effects
+vars <- c("Age", "Age_Sq", "Events", "Future_Home_Diff", "Future_Home_Same", "Male", "Marginal_Medal", "Marginal_MedalXMale", "Team_Event")
+ame_fo_nofe <- summary(margins(reg_fo_nofe, variables = vars))
+ame_fo_nofe$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fo_nofe <- ame_fo_nofe[order(ame_fo_nofe$factor),]
+ame_fo_nocfe <- summary(margins(reg_fo_nocfe, variables = vars))
+ame_fo_nocfe$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fo_nocfe <- ame_fo_nocfe[order(ame_fo_nocfe$factor),]
+ame_fo_all <- summary(margins(reg_fo_all, variables = vars))
+ame_fo_all$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fo_all <- ame_fo_all[order(ame_fo_all$factor),]
+ame_fm_nofe <- summary(margins(reg_fm_nofe, variables = vars))
+ame_fm_nofe$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fm_nofe <- ame_fm_nofe[order(ame_fm_nofe$factor),]
+ame_fm_nocfe <- summary(margins(reg_fm_nocfe, variables = vars))
+ame_fm_nocfe$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fm_nocfe <- ame_fm_nocfe[order(ame_fm_nocfe$factor),]
+ame_fm_all <- summary(margins(reg_fm_all, variables = vars))
+ame_fm_all$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fm_all <- ame_fm_all[order(ame_fm_all$factor),]
+ame_fg_nofe <- summary(margins(reg_fg_nofe, variables = vars))
+ame_fg_nofe$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fg_nofe <- ame_fg_nofe[order(ame_fg_nofe$factor),]
+ame_fg_nocfe <- summary(margins(reg_fg_nocfe, variables = vars))
+ame_fg_nocfe$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fg_nocfe <- ame_fg_nocfe[order(ame_fg_nocfe$factor),]
+ame_fg_all <- summary(margins(reg_fg_all, variables = vars))
+ame_fg_all$factor <- c("X4_Age", "X5_Age_Sq", "X6_Events", "X9_Future_Home_Diff", "X8_Future_Home_Same", "X2_Male", "X1_Marginal_Medal", "X3_Marginal_MedalXMale", "X7_Team_Event")
+ame_fg_all <- ame_fg_all[order(ame_fg_all$factor),]
+d <- as.data.frame(matrix(rnorm(10 * 4), nc = 10))
+regs <- c("Marginal_Medal", "Male", "Marginal_MedalXMale", "Age", "Age_Sq", "Events", "Team_Event", "Future_Home_Same", "Future_Home_Diff")
+dep <- "Attended_Future_Olympics"
+names(d) <- c(dep, regs)
+f <- as.formula(paste(dep, "~ 0 +", paste(regs, collapse = "+")))
+placeholder_1 <- lm(f, d)
+dep <- "Earned_Future_Medal"
+names(d) <- c(dep, regs)
+f <- as.formula(paste(dep, "~ 0 +", paste(regs, collapse = "+")))
+placeholder_2 <- lm(f, d)
+dep <- "Earned_Future_Gold"
+names(d) <- c(dep, regs)
+f <- as.formula(paste(dep, "~ 0 +", paste(regs, collapse = "+")))
+placeholder_3 <- lm(f, d)
+stargazer(placeholder_1, placeholder_1, placeholder_1, 
+          placeholder_2, placeholder_2, placeholder_2,
+          placeholder_3, placeholder_3, placeholder_3,
+          coef = list(as.vector(ame_fo_nofe$AME), as.vector(ame_fo_nocfe$AME), as.vector(ame_fo_all$AME),
+                      as.vector(ame_fm_nofe$AME), as.vector(ame_fm_nocfe$AME), as.vector(ame_fm_all$AME),
+                      as.vector(ame_fg_nofe$AME), as.vector(ame_fg_nocfe$AME), as.vector(ame_fg_all$AME)),
+          se = list(as.vector(ame_fo_nofe$SE), as.vector(ame_fo_nocfe$SE), as.vector(ame_fo_all$SE),
+                    as.vector(ame_fm_nofe$SE), as.vector(ame_fm_nocfe$SE), as.vector(ame_fm_all$SE),
+                    as.vector(ame_fg_nofe$SE), as.vector(ame_fg_nocfe$SE), as.vector(ame_fg_all$SE)),
+          type="latex", style="qje", 
+          title="Average Marginal Effects for Logit Medal Effect (-1 vs. 0)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent.", "See Table 11 for corresponding logistic regressions."),
+          notes.append = FALSE, notes.align = "l",
+          omit.stat=c("all"), 
+          no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_logit10_ame.tex")
+```
+# Subsample LPM Medal Effect (-1 vs. 0)
+```{r, warning=FALSE}
+df_marg_pre_ww2 <- subset(df_marg, Games_Year <= 1936)
+df_marg_post_ww2 <- subset(df_marg, Games_Year > 1936 & Games_Year <= 1992)
+df_marg_stag <- subset(df_marg, Games_Year > 1992 & Games_Year < 2016)
+# Attended Future Olympics as outcome
+reg_fo_pre_ww2 <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fo_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_post_ww2 <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fo_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_stag <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fo_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Medal as outcome
+reg_fm_pre_ww2 <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fm_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_post_ww2 <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fm_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_stag <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fm_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Gold Medal as outcome
+reg_fg_pre_ww2 <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fg_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_post_ww2 <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fg_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_stag <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fg_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+stargazer(reg_fo_pre_ww2, reg_fo_post_ww2, reg_fo_stag, 
+          reg_fm_pre_ww2, reg_fm_post_ww2, reg_fm_stag,
+          reg_fg_pre_ww2, reg_fg_post_ww2, reg_fg_stag,
+          se = list(robust_se_fo_pre_ww2, robust_se_fo_post_ww2, robust_se_fo_stag, 
+                    robust_se_fm_pre_ww2, robust_se_fm_post_ww2, robust_se_fm_stag, 
+                    robust_se_fg_pre_ww2, robust_se_fg_post_ww2, robust_se_fg_stag),
+          type="latex", style="qje", 
+          title="Subsample Linear Probability Medal Effect (-1 vs. 0)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          column.labels=c("1896-1936", "1948-1992", "1994-2014", "1896-1936", "1948-1992", "1994-2014", "1896-1936", "1948-1992", "1994-2014"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          add.lines=list(rep("",10), 
+                         c('Year fixed effects','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'), 
+                         c('Country fixed effects','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'),
+                         c('F-test: MarginalMedal+D = 0', paste0("\\multicolumn{1}{c}{",fp_fo_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_stag,"}"),
+                           paste0("\\multicolumn{1}{c}{",fp_fm_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_stag,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_stag,"}"))),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.", "F-test p-value reported. The subsample time periods are Before WWII: 1896-1936, After WWII: 1948-1992, Staggered: 1994-2014"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Country.f", "Games_Year.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"), 
+          report="vc*s", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_sslpm10.tex")
+```
+# Subsample LPM Medal Effect (-1 vs. 1)
+```{r, warning=FALSE}
+df_marg_pre_ww2 <- subset(df_marg_1, Games_Year <= 1936)
+df_marg_post_ww2 <- subset(df_marg_1, Games_Year > 1936 & Games_Year <= 1992)
+df_marg_stag <- subset(df_marg_1, Games_Year > 1992 & Games_Year < 2016)
+# Attended Future Olympics as outcome
+reg_fo_pre_ww2 <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fo_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_post_ww2 <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fo_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_stag <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fo_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Medal as outcome
+reg_fm_pre_ww2 <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fm_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_post_ww2 <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fm_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_stag <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fm_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Gold Medal as outcome
+reg_fg_pre_ww2 <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fg_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_post_ww2 <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fg_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_stag <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fg_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+stargazer(reg_fo_pre_ww2, reg_fo_post_ww2, reg_fo_stag, 
+          reg_fm_pre_ww2, reg_fm_post_ww2, reg_fm_stag,
+          reg_fg_pre_ww2, reg_fg_post_ww2, reg_fg_stag,
+          se = list(robust_se_fo_pre_ww2, robust_se_fo_post_ww2, robust_se_fo_stag, 
+                    robust_se_fm_pre_ww2, robust_se_fm_post_ww2, robust_se_fm_stag, 
+                    robust_se_fg_pre_ww2, robust_se_fg_post_ww2, robust_se_fg_stag),
+          type="latex", style="qje", 
+          title="Subsample Linear Probability Medal Effect (-1 vs. 1)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          column.labels=c("1896-1936", "1948-1992", "1994-2014", "1896-1936", "1948-1992", "1994-2014", "1896-1936", "1948-1992", "1994-2014"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          add.lines=list(rep("",10), 
+                         c('Year fixed effects','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'), 
+                         c('Country fixed effects','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'),
+                         c('F-test: MarginalMedal+D = 0', paste0("\\multicolumn{1}{c}{",fp_fo_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_stag,"}"),
+                           paste0("\\multicolumn{1}{c}{",fp_fm_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_stag,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_stag,"}"))),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.", "F-test p-value reported. The subsample time periods are Before WWII: 1896-1936, After WWII: 1948-1992, Staggered: 1994-2014"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Country.f", "Games_Year.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"), 
+          report="vc*s", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_sslpm11.tex")
+```
+# Subsample LPM Medal Effect (-1 vs. 2)
+```{r, warning=FALSE}
+df_marg_pre_ww2 <- subset(df_marg_2, Games_Year <= 1936)
+df_marg_post_ww2 <- subset(df_marg_2, Games_Year > 1936 & Games_Year <= 1992)
+df_marg_stag <- subset(df_marg_2, Games_Year > 1992 & Games_Year < 2016)
+# Attended Future Olympics as outcome
+reg_fo_pre_ww2 <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fo_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_post_ww2 <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fo_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fo_stag <- lm(Attended_Future_Olympics ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fo_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fo_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fo_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fo_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Medal as outcome
+reg_fm_pre_ww2 <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fm_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_post_ww2 <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fm_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fm_stag <- lm(Earned_Future_Medal ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fm_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fm_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fm_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fm_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+# Earned Future Gold Medal as outcome
+reg_fg_pre_ww2 <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_pre_ww2)
+cov <- vcovCL(reg_fg_pre_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_pre_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_pre_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_pre_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_post_ww2 <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_post_ww2)
+cov <- vcovCL(reg_fg_post_ww2, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_post_ww2 <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_post_ww2, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_post_ww2 <- round(tst$`Pr(>F)`[2], digits = 3)
+reg_fg_stag <- lm(Earned_Future_Gold ~  Marginal_Medal + Male + Marginal_MedalXMale + Age + Age_Sq + Events + Team_Event + Future_Home_Same + Future_Home_Diff + Country.f + Games_Year.f, data = df_marg_stag)
+cov <- vcovCL(reg_fg_stag, cluster = ~ Country + Games_Year, type = "HC1")
+robust_se_fg_stag <- sqrt(diag(cov))
+tst <- linearHypothesis(reg_fg_stag, vcov = cov, "Marginal_Medal+Marginal_MedalXMale=0")
+fp_fg_stag <- round(tst$`Pr(>F)`[2], digits = 3)
+stargazer(reg_fo_pre_ww2, reg_fo_post_ww2, reg_fo_stag, 
+          reg_fm_pre_ww2, reg_fm_post_ww2, reg_fm_stag,
+          reg_fg_pre_ww2, reg_fg_post_ww2, reg_fg_stag,
+          se = list(robust_se_fo_pre_ww2, robust_se_fo_post_ww2, robust_se_fo_stag, 
+                    robust_se_fm_pre_ww2, robust_se_fm_post_ww2, robust_se_fm_stag, 
+                    robust_se_fg_pre_ww2, robust_se_fg_post_ww2, robust_se_fg_stag),
+          type="latex", style="qje", 
+          title="Subsample Linear Probability Medal Effect (-1 vs. 2)", 
+          dep.var.labels=c("Attended Future Olympics", "Earned Future Medal", "Earned Future Gold Medal"), 
+          column.labels=c("1896-1936", "1948-1992", "1994-2014", "1896-1936", "1948-1992", "1994-2014", "1896-1936", "1948-1992", "1994-2014"), 
+          covariate.labels=c("MarginalMedal", "Male", "MarginalMedal*Male (D)", "Age", "AgeSquared", "Events", "TeamEvent", "FutureHomeSame", "FutureHomeDiff"),
+          add.lines=list(rep("",10), 
+                         c('Year fixed effects','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'), 
+                         c('Country fixed effects','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}','\\multicolumn{1}{c}{Yes}'),
+                         c('F-test: MarginalMedal+D = 0', paste0("\\multicolumn{1}{c}{",fp_fo_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fo_stag,"}"),
+                           paste0("\\multicolumn{1}{c}{",fp_fm_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fm_stag,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_pre_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_post_ww2,"}"), paste0("\\multicolumn{1}{c}{",fp_fg_stag,"}"))),
+          notes=c("*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.", "F-test p-value reported. The subsample time periods are Before WWII: 1896-1936, After WWII: 1948-1992, Staggered: 1994-2014"),
+          notes.append = FALSE, notes.align = "l",
+          omit=c("Country.f", "Games_Year.f" ,"Constant"), 
+          omit.stat=c("LL","ser","f","rsq"), 
+          report="vc*s", no.space=TRUE, align=TRUE,
+          font.size = "footnotesize", column.sep.width = "-15pt",
+          float.env = "sidewaystable",
+          header = FALSE, out="tables/p1_sslpm12.tex")
+```
+
+
+
+
+
+

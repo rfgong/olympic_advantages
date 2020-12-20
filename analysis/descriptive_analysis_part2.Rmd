@@ -1,0 +1,55 @@
+---
+title: "descriptive_analysis_part2"
+author: "Richard Gong"
+date: "11/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo=FALSE, warning=FALSE}
+library(pacman)
+p_load(stargazer, dplyr, data.table, ggplot2)
+df <- read.csv("../data/p2_host_cohorts.txt", sep = "\t")
+df <- subset(df, !is.na(Distance))
+summary(df)
+```
+# Debut Individuals By Year
+```{r}
+df <- read.csv("../data/p1_athlete_debuts.txt", sep = "\t")
+df_s_all <- subset(df, is_summer == 1)
+df_s_all <- distinct(df_s_all, Name, Birth, Male, .keep_all = TRUE)
+df_s_fem <- subset(df_s_all, Male == 0)
+df_s_fem <- distinct(df_s_fem, Name, Birth, Male, .keep_all = TRUE)
+df_w_all <- subset(df, is_summer == 0)
+df_w_all <- distinct(df_w_all, Name, Birth, Male, .keep_all = TRUE)
+df_w_fem <- subset(df_w_all, Male == 0)
+df_w_fem <- distinct(df_w_fem, Name, Birth, Male, .keep_all = TRUE)
+indivs_s_all <- aggregate(df_s_all, by=list(Year=df_s_all$Games_Year), FUN=length)
+indivs_s_all <- select(indivs_s_all, Year, Name)
+indivs_s_fem <- aggregate(df_s_fem, by=list(Year=df_s_fem$Games_Year), FUN=length)
+indivs_s_fem <- select(indivs_s_fem, Year, Name)
+indivs_w_all <- aggregate(df_w_all, by=list(Year=df_w_all$Games_Year), FUN=length)
+indivs_w_all <- select(indivs_w_all, Year, Name)
+indivs_w_fem <- aggregate(df_w_fem, by=list(Year=df_w_fem$Games_Year), FUN=length)
+indivs_w_fem <- select(indivs_w_fem, Year, Name)
+ggplot() +
+  xlab("Year") + ylab("Debut Athletes") +
+  scale_x_continuous(breaks = round(seq(min(df$Games_Year), max(df$Games_Year), by = 8),1)) + 
+  geom_line(data=indivs_s_all, aes(x=Year, y=Name, color="Summer All")) + 
+  geom_line(data=indivs_s_fem, aes(x=Year, y=Name, color="Summer Female"), linetype=2) + 
+  geom_line(data=indivs_w_all, aes(x=Year, y=Name, color="Winter All")) + 
+  geom_line(data=indivs_w_fem, aes(x=Year, y=Name, color="Winter Female"),  linetype=2) + 
+  geom_point(data=indivs_s_all, aes(x=Year, y=Name), color = "darkred", size = 0.9) + 
+  geom_point(data=indivs_s_fem, aes(x=Year, y=Name), color = "darkred", size = 0.9) + 
+  geom_point(data=indivs_w_all, aes(x=Year, y=Name), color = "steelblue", size = 0.9) + 
+  geom_point(data=indivs_w_fem, aes(x=Year, y=Name), color = "steelblue", size = 0.9) +
+  scale_colour_manual("", 
+                      breaks = c("Summer All", "Summer Female",
+                                 "Winter All", "Winter Female"),
+                      values = c("darkred", "darkred", "steelblue", "steelblue"),
+                      guide = guide_legend(override.aes=list(linetype=c(1,2,1,2))))
+ggsave("images/p1_debuts.png")
+```
+
