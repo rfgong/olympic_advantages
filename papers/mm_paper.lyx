@@ -1,0 +1,1583 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{dcolumn}
+\usepackage{rotating}
+\usepackage{abstract}
+\AtBeginDocument{\addto{\captionsenglish}{\renewcommand{\abstractname}{}}}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "times" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing double
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date true
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+4th Place Finishers and Bronze Medalists: 
+\begin_inset Newline newline
+\end_inset
+
+Differences in Olympic Career Outcomes 
+\end_layout
+
+\begin_layout Author
+Richard Gong
+\size normal
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+e-mail: r_gong@berkeley.edu
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+UC Berkeley
+\end_layout
+
+\begin_layout Quote
+\begin_inset space \qquad{}
+\end_inset
+
+
+\size small
+This paper presents evidence on whether winning an Olympic medal can impact
+ a debut athlete's future Olympic career in terms of future Olympic Games
+ attended and medals won.
+ Olympedia's comprehensive data set spanning Athens 1896 to PyeongChang
+ 2018 is used.
+ The benefits for earning an Olympic medal vary based on time period, gender,
+ and outcome of interest.
+ Overall and in the recent era from Lillehammer 1994 to PyeongChang 2018,
+ there is evidence to suggest a debut athlete who just misses out on a medal
+ performs as well in the future as the athlete right ahead of him or her
+ who wins a medal.
+ 
+\end_layout
+
+\begin_layout Quote
+
+\size small
+\emph on
+Keywords: Olympics, medal, gender, fourth place
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Medals in the Olympics can be determined by the smallest margins.
+ Athletes can be so close in ability that there are ties.
+ One such example is when three swimmers tied for the Silver medal in the
+ 100m Men’s Butterfly of Rio 2016.
+ The margin between a Bronze medal and fourth place, can likewise be extremely
+ narrow.
+ Nonetheless, making it to the podium leads to much greater recognition
+ and financial rewards.
+ Countries including the United States, China, and India pay athletes prize
+ money for winning medals.
+ For PyeongChang 2018, U.S.
+ Olympian’s earned “$37,500 for each gold … $22,500 for each silver and
+ $15,000 for each bronze” 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "elkins_2018"
+literal "false"
+
+\end_inset
+
+.
+ This reward money, in addition to sponsorship opportunities that arise
+ with greater recognition, can meaningfully impact an athlete’s ability
+ to compete at the elite level.
+ In the lead up to Rio 2016, “more than 100 US athletes started GoFundMe
+ pages” and some “even applied for food stamps” 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "mcgee_2016"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Yet, there may be negative consequences to Olympic success as well.
+ A pair of qualitative studies using interviews from 18 Australian gold
+ medalists finds that winning the gold medal creates “significant and long-lasti
+ng change to most athletes’ lives,” 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "jackson1998lifei"
+literal "false"
+
+\end_inset
+
+.
+ However, this change can be an impediment for athletes as they report how
+ preparation and focus for subsequent competitions was mostly negatively
+ affected 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "jackson1998lifeii"
+literal "false"
+
+\end_inset
+
+.
+ A study interviewing 17 world champion athletes in various sports finds
+ similar conclusions 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "kreiner1993winning"
+literal "false"
+
+\end_inset
+
+ .
+ Olympic champion swimmers Michael Phelps and Ian Thorpe have stated that
+ expectations to win future medals can be both damaging to mental health
+ and athlete performance 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "jenkins_2020,australian_associated_press_2018"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Anecdotal evidence of an Olympic medal changing the course of an athlete’s
+ career has scarcely been put to a rigorous test.
+ This paper aims to provide such a test by comparing the outcomes of athletes
+ who marginally win or miss out on a medal during their Olympic debuts.
+ This paper makes a novel contribution to the literature studying the career
+ consequences of success in sport, and relates to the literature investigating
+ determinants of sports performance.
+ The rest of the paper proceeds as follows.
+ Section 2 describes the data source.
+ Section 3 details the empirical strategy and presents results.
+ Section 4 discusses possible explanations for the results.
+ Section 5 concludes.
+\end_layout
+
+\begin_layout Section
+Data Source
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The main data used comes from Olympedia, a website backed by the International
+ Olympic Committee (IOC).
+ Athlete results are available from the 1896 Athens Summer Olympics to the
+ 2018 PyeongChang Winter Olympics.
+ There are 275,808 results across 132,283 athletes.
+ Information on athlete biological sex, nationality, and date of birth are
+ available.
+ Delayed disqualifications due to violations such as doping are reflected
+ in the results.
+\end_layout
+
+\begin_layout Section
+Marginal Medalists
+\end_layout
+
+\begin_layout Subsection
+Threats to Validity
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+To reliably compare the outcomes of marginal medalists with non-medalists,
+ three main threats to validity must be addressed.
+ The first threat concerns athlete ability.
+ If there are substantial and consistent differences in ability between
+ athletes who finish in different places, then the estimated impact of winning
+ a medal on an athlete's career will be biased.
+ Gold medalists can be outliers among Olympic athletes, who are themselves
+ outliers in sport.
+ A broad comparison between gold medalists and any lower placed finishing
+ group may not be appropriate in most Olympic disciplines.
+ Even comparing silver medalists to a counterfactual of 4th place non-medalists
+ could be tenuous due to potentially significant differences in ability.
+ Yet, comparing the outcomes of bronze medalists and 4th place finishers
+ may lead to a plausible assessment of any benefits from earning an Olympic
+ medal.
+ To generalize, it is best to compare marginal medal winners with those
+ who marginally miss out, as these athletes are likely to be close in ability.
+ Due to ties, there may be multiple marginal medalists and non-medalists
+ for a given event.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Medals are awarded for the place at which athletes tie.
+ Places immediately after the tied athletes are skipped.
+ This may result in certain medals not being awarded.
+ For example, if two athletes tie for first they both receive gold, and
+ the next athlete after them places third place, receiving a bronze.
+ Stockholm 1912 and prior, however, did not associate medals exactly with
+ place so the gold, silver, and bronze medals were always awarded.
+ The most medals ever awarded in a single event occurred in the Stockholm
+ 1912 Men's Pole Vault: 1 gold, 2 silvers, 3 bronzes.
+ (In later Olympics the 3 bronzes would not have been awarded.)
+\end_layout
+
+\end_inset
+
+ This on the margin comparison includes silver medalists and even gold medalists
+ as marginal medalists when they earn the last medal awarded due to ties.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+There are two cases where 3 gold medals were awarded in a single event:
+ Men's Pommel horse in London 1948 and Seoul 1988.
+ 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Silver and gold medalists involved in ties are likely to be closer in ability
+ to the rest of the field.
+ Results are robust to the exclusion of marginal medalists who earn a silver
+ or gold.
+ The sample constructed in the following section includes 36 marginal silver
+ medalists and just 1 marginal gold medalist.
+ 
+\end_layout
+
+\end_inset
+
+ The marginal athlete missing out also need not be in 4th place when there
+ are ties of more than two people.
+\end_layout
+
+\begin_layout Standard
+A second threat to validity is the past Olympic history of an athlete.
+ If a gold medalist in previous Olympics earns a bronze medal in a later
+ games, it is unlikely this medal will impact his or her career as much
+ as a person whose first Olympic medal was a bronze.
+ Restricting analysis to only Olympic debut athletes can address this threat
+ at the cost of sample size.
+\end_layout
+
+\begin_layout Standard
+A third threat to internal validity is specific to athletes who compete
+ in team events.
+ The future trajectories of such athletes can depend on team dynamics, including
+ the performance of teammates and turnover of team members.
+ It is unclear how the impact of winning team medals should be assessed
+ on the level of each individual team member.
+ Therefore, athletes who compete exclusively in team events are excluded
+ from analysis.
+\end_layout
+
+\begin_layout Subsection
+Sample Construction & Descriptive Analysis
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+I construct a data set for individual event athletes, cataloging each athlete's
+ Olympic debut year.
+ Each athlete is uniquely identified using name, birthday, and biological
+ sex.
+ Figure 1 shows how many debut athletes there are per Olympic Games by season.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Olympic Games occur on a four-year cycle.
+ The first ever Winter Olympic Games was Chamonix 1924.
+ Up through 1992, the Winter and Summer Olympics were conducted during the
+ same year, in that order.
+ The Winter Olympic Games has since been staggered by two years beginning
+ with Lillehammer 1994.
+ 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The Olympic Games were cancelled in 1916 due to WWI, and in 1940 and 1944
+ during WWII.
+\end_layout
+
+\end_inset
+
+ The Summer Olympic Games are larger in scale compared to the Winter Olympic
+ Games.
+ Female athletes have been able to participate in greater numbers over time,
+ with the gender ratio nearing parity in the modern era.
+ There are several years with sharp decreases in the number of debut athletes
+ due to factors including economic hardship, boycotts, and stricter qualificatio
+n rules.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Lake Placid 1932 and Los Angeles 1932 were hosted in the United States.
+ Amid the Great Depression, several nations were unable to sponsor athletes.
+ In 1956, the Winter Olympic Games was hosted in Cortina d'Ampezzo, and
+ the Summer Olympic Games was split across Melbourne and Stockholm.
+ Due to strict Australian quarantine regulations, Stockholm was chosen to
+ hold equestrian events months earlier than the rest of the Summer Olympic
+ Games.
+ Soviet Union military action during the Hungarian Revolution of 1956 led
+ to political tension before the Olympic year was concluded in Melbourne.
+ The International Olympic Committee (IOC) refused to suspend Soviet Union
+ Olympic participation, leading a number of nations to boycott events held
+ in Melbourne.
+ Montreal 1976 was boycotted by 29 countries when the IOC did not punish
+ New Zealand for defying a sporting embargo against apartheid South Africa.
+ In 1980, 66 nations boycotted the Summer Olympic Games in Moscow, protesting
+ the Soviet–Afghan War.
+ Lillehammer 1994 introduced stricter qualification rules for the Winter
+ Olympic Games, reducing the number of athletes from countries with warmer
+ climates.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For each athlete, I identify his or her best Olympic debut performance.
+ Debut performance is measured using what I call Distance: the place that
+ awarded the last medal in the event minus the athlete's place.
+ Marginal medal winners have Distance 0, and marginal non-medalists have
+ Distance -1.
+ I take the maximum of this measure to determine best debut performance
+ when an athlete competes in multiple individual events.
+ 
+\end_layout
+
+\begin_layout Standard
+Based on athlete results in future Olympics, I create three outcome measures:
+ Future Olympics, Future Medals, Future Gold Medals.
+ Additional covariates are also added.
+ Summary statistics for the data set are presented in Table 1.
+ Variables without 
+\begin_inset Quotes eld
+\end_inset
+
+Future
+\begin_inset Quotes erd
+\end_inset
+
+ in their names are determined using an athlete's debut characteristics.
+\end_layout
+
+\begin_layout Standard
+Given high standard deviations, I fail to reject that observed covariates
+ are similarly distributed across all marginal medal Distances displayed.
+ The means for Future Medals and Future Gold Medals trend upwards from left
+ to right in the table.
+\end_layout
+
+\begin_layout Subsection
+Linear Estimation
+\end_layout
+
+\begin_layout Subsubsection*
+Constant Medal Effect
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+I estimate the effect of earning a marginal medal using the difference in
+ means between outcomes for marginal medalists and marginal non-medalists.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Formula 
+\begin{equation}
+Outcomes_{yci}=\alpha+\alpha_{y}+\alpha_{c}+\beta MarginalMedal_{i}+X_{i}\gamma+\varepsilon_{i}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $y$
+\end_inset
+
+ is an index for year, 
+\begin_inset Formula $c$
+\end_inset
+
+ is an index for country, and 
+\begin_inset Formula $i$
+\end_inset
+
+ is an index for individual.
+ 
+\begin_inset Formula $Outcomes_{yci}$
+\end_inset
+
+ can be either 
+\begin_inset Formula $FutureOlympics_{yci}$
+\end_inset
+
+, 
+\begin_inset Formula $FutureMedals_{yci}$
+\end_inset
+
+, or 
+\begin_inset Formula $FutureGolds_{yci}.$
+\end_inset
+
+ These outcomes sum over Olympic results occurring after an athlete's debut
+ games.
+ The counts of future medals of any kind and future gold medals aggregate
+ across both individual and team events.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Recall that only athletes who competed in at least one individual event
+ during their debut are included in the sample.
+ Due to exemplary individual performance, an individual event athlete may
+ have the opportunity to compete in team events, usually relays.
+ Thus, future team event medals are outcomes determined in part by individual
+ event performance.
+\end_layout
+
+\end_inset
+
+ Year fixed effects 
+\begin_inset Formula $\alpha_{y}$
+\end_inset
+
+ based on an individual's debut year capture time trends or era specific
+ characteristics that may influence outcomes.
+ Country fixed effects 
+\begin_inset Formula $\alpha_{c}$
+\end_inset
+
+ based on an individual's debut nationality capture determinants of athlete
+ outcomes related to national identity.
+ 
+\begin_inset Formula $MarginalMedal_{i}$
+\end_inset
+
+ is a dummy variable for being a marginal medalist during one's debut.
+ 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ is a vector of controls including 
+\begin_inset Formula $Age_{i}$
+\end_inset
+
+, 
+\begin_inset Formula $Age_{i}^{2}$
+\end_inset
+
+, 
+\begin_inset Formula $Events_{i}$
+\end_inset
+
+, 
+\begin_inset Formula $TeamEvent_{i}$
+\end_inset
+
+, 
+\begin_inset Formula $FutureHomeSame_{i}$
+\end_inset
+
+, and 
+\begin_inset Formula $FutureHomeDiff_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $Events_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $TeamEvent_{i}$
+\end_inset
+
+ are used as controls since athletes who compete in more individual events
+ and team events during their debut may have greater odds of attending a
+ future Olympics or winning a medal.
+ 
+\begin_inset Formula $FutureHomeSame_{i}$
+\end_inset
+
+, and 
+\begin_inset Formula $FutureHomeDiff_{i}$
+\end_inset
+
+ count the number of times an athlete's home country hosts an Olympics of
+ the same or different season as the athlete's debut season, within the
+ next 12 years.
+ Athletes anticipating an Olympics at home may stay on the Olympic scene
+ longer.
+ In addition, Olympic host nations have automatic qualification for their
+ athletes in both individual and team events 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pettigrew2016hosting"
+literal "false"
+
+\end_inset
+
+.
+ This may allow veteran athletes who are waning in ability to still compete
+ in a home Olympics.
+\end_layout
+
+\begin_layout Standard
+Table 2 presents regression results for the effect of winning a marginal
+ medal.
+ Under this specification the effect is assumed to be constant across genders
+ and athletes of different Olympic seasons.
+ Standard errors are clustered at the year-country level.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Finite cluster correction G/(G-1) and degrees of freedom (N-1)/(N-K) correction
+ are applied to standard errors.
+\end_layout
+
+\end_inset
+
+ Columns (3), (6), and (9) are my preferred estimates as they include all
+ control variables.
+ These columns show no statistically significant effect of earning a marginal
+ medal on all three outcomes.
+ Athletes who narrowly earn a medal and those who narrowly miss out on one
+ during their Olympic debuts appear to have equal success in future Olympics.
+\end_layout
+
+\begin_layout Subsubsection*
+
+\series bold
+Heterogeneous
+\series default
+ Medal Effect
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The following specifications allow the marginal medal effect to differ based
+ on season and gender.
+ A heterogeneous medal effect based on Olympic season is first evaluated.
+ 
+\begin_inset Formula $Summer_{i}$
+\end_inset
+
+ is a dummy variable for a games being a summer edition.
+ 
+\begin_inset Formula $S_{i}$
+\end_inset
+
+ represents the interaction term 
+\begin_inset Formula $MarginalMedal_{i}*Summer_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Formula 
+\begin{equation}
+Outcomes_{yci}=\alpha+\alpha_{y}+\alpha_{c}+\beta MarginalMedal_{i}+\delta Summer{}_{i}+\eta S_{i}+X_{i}\gamma+\varepsilon_{i}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Columns (3), (6), and (9) in Table 3 show insignificant marginal medal effects
+ that do not vary based on Olympic season.
+ Zero marginal medal effects for winter Olympic athletes cannot be rejected.
+ F-tests for summer Olympic athletes fail to reject a null marginal medal
+ effect as well.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Although summer and winter Olympic sports are quite different in nature,
+ it is important to keep in mind that sports within each season vary tremendousl
+y as well.
+ Judo, swimming, and equestrian dressage are just about as different from
+ each other as skeleton, figure skating, and biathlon.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next, a heterogeneous medal effect based on gender is evaluated.
+ 
+\begin_inset Formula $D_{i}$
+\end_inset
+
+ represents the interaction term 
+\begin_inset Formula $MarginalMedal_{i}*Male_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Formula 
+\begin{equation}
+Outcomes_{yci}=\alpha+\alpha_{y}+\alpha_{c}+\beta MarginalMedal_{i}+\delta Male_{i}+\eta D_{i}+X_{i}\gamma+\varepsilon_{i}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Columns (3), (6), and (9) in Table 4 show little evidence of marginal medal
+ effects.
+ One exception is the F-test presented in column (3) that rejects the null
+ hypothesis concerning male marginal medalists at the one percent level;
+ male marginal medalists are less likely to attend a future Olympics.
+ Focusing attention on marginal non-medalists, there appears to be a difference
+ in mean outcomes for male and female athletes.
+ Over future Olympic appearances, Male debut non-medalists win 0.071 more
+ gold medals, and 0.103 more medals of any kind compared to their female
+ counterparts.
+ What is driving this heterogeneity?
+\end_layout
+
+\begin_layout Standard
+The regressions used thus far span the full sample from 1896–2018.
+ Yet, female athlete attendance in the Olympic games has risen substantially
+ in the past few decades as depicted in Figure 1.
+ In the full sample, the typical female athlete is more representative of
+ the modern Olympic era than the typical male athlete.
+ A comparison between female and male athletes of the same era may be preferable.
+ As a result, I break the sample into three distinct eras for comparison
+ between contemporaries.
+ The eras are Before WWII: 1896-1936, After WWII: 1948-1992, and Staggered
+ Olympics: 1994-2018.
+ Delineating by era also allows the marginal medal effect to vary by time
+ period.
+\end_layout
+
+\begin_layout Standard
+Table 5 presents estimates by era.
+ Mean outcomes for male and female athletes differ significantly only during
+ the 1948-1992 period.
+ The F-test for column (2) suggests that narrowly winning a medal led male
+ athletes to attend fewer future Olympics during the 1948-1992 period.
+ Columns (4) and (5) display statistically significant marginal medal effects
+ at the five percent level for female athletes.
+ These effects are curiously in opposite directions for the 1896-1936 and
+ 1948-1992 time periods.
+ Turning attention to the modern Olympic era of 1994-2018, there is no evidence
+ of marginal medal effects or heterogeneity by gender.
+ 
+\end_layout
+
+\begin_layout Standard
+Yet, estimated coefficients for the modern era are biased towards zero due
+ to how outcomes are defined.
+ Outcomes aggregate over future results for debut athletes, but Olympic
+ Games beyond PyeongChang 2018 have not occurred at this time.
+ Thus, outcomes for recent Olympic debut athletes are censored.
+ Sufficient time may not have passed to realize differences in outcomes
+ due to gender or winning a medal for athletes later in the modern era.
+ This issue is alleviated in part by redefining outcomes in the Probability
+ Estimation section.
+\end_layout
+
+\begin_layout Subsubsection*
+High Performers
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Thus far, a typical athlete who just misses a medal appears to perform no
+ worse in the future compared to his or her counterpart who just won a medal.
+ Now I will compare the outcomes of marginal non-medalists with those of
+ athletes who earned higher place medals during their debuts.
+ In other words, I compare Distance -1 non-medalists with Distance 1 and
+ Distance 2 medalists.
+ These comparisons are subject to greater omitted variable bias from unobserved
+ athlete ability.
+ The MarginalMedal dummy variable, assigned 1 for the medal earning group,
+ will have an upwards biased coefficient.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+If ability is positively correlated with outcomes and the MarginalMedal
+ variable, there is an upwards bias.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Panel B in each of Tables 6 and 7 compares the outcomes of debut athletes
+ with Distance -1 and Distance 1, loosely speaking 4th place finishers and
+ silver medalists.
+ Earning a medal during one's debut is now a clear predictor of earning
+ gold medals or medals of any kind in the future.
+ However, medalists do not attend a greater number of future Olympics.
+ Heterogeneity in male and female average outcomes persists.
+ On average, a female athlete who wins a debut silver medal will earn 0.126
+ more gold medals and 0.262 more medals of any kind during her Olympic career
+ compared to a female non-medalist counterpart who finishes in 4th.
+ A male athlete who wins a debut silver medal will earn 0.087 more medals
+ of any kind over his career compared to his male counterpart.
+ Results are driven by the 1948-1992 era as indicated by columns (2), (5),
+ and (8) of Table 7.
+\end_layout
+
+\begin_layout Standard
+Panel C in Tables 6 and 7 compares the outcomes of debut athletes with Distance
+ -1 and Distance 2, loosely speaking 4th place finishers and gold medalists.
+ The magnitude of the coefficient for MarginalMedal is even higher.
+ Heterogeneity in male and female average outcomes is found once again.
+ On average, female debut gold medalists attend 0.114 more Olympic Games,
+ earn 0.168 more gold medals, and earn 0.302 more medals of any kind compared
+ to their non-medalist counterparts who place 4th.
+ Male debut gold medalists earn 0.090 more gold medals and 0.184 more medals
+ of any kind compared to their male counterparts.
+ Results are now driven in part by the 1994-2018 era in addition to the
+ 1948-1992 era.
+\end_layout
+
+\begin_layout Standard
+Despite censored outcome variables for the modern era of 1994-2018, column
+ (9) in Table 7 suggests higher place medalists earn a significantly greater
+ number of gold medals after debut.
+ Comparing mean outcomes for 4th place finishers with high performers may
+ not reveal the precise benefits of winning an Olympic medal due to ability
+ confounding.
+ Yet these comparisons help put into perspective the striking lack of difference
+s in outcomes between 4th place finishers and 3rd place finishers, which
+ persists even with ability bias pulling the groups apart.
+\end_layout
+
+\begin_layout Subsection
+Probability Estimation
+\end_layout
+
+\begin_layout Subsubsection*
+Linear & Logistic Probability Effect
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Thus far the marginal medal effect has been measured as a change in count
+ of future Olympics, medals, and gold medals.
+ I now define 
+\begin_inset Formula $BinaryOutcomes_{yci}$
+\end_inset
+
+ that are 
+\begin_inset Formula $AttendedFutureOlympics_{yci}$
+\end_inset
+
+, 
+\begin_inset Formula $EarnedFutureMedal_{yci}$
+\end_inset
+
+, and 
+\begin_inset Formula $EarnedFutureGold_{yci}$
+\end_inset
+
+.
+ These dummy outcomes record if an athlete attends at least one Olympics,
+ earns at least one medal, and earns at least one gold medal after his or
+ her debut games.
+ This allows me to estimate the effect of winning a medal as a change in
+ probabilities.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Formula 
+\begin{equation}
+BinaryOutcomes_{yci}=\alpha+\alpha_{y}+\alpha_{c}+\beta MarginalMedal_{i}+\delta Male_{i}+\eta D_{i}+X_{i}\gamma+\varepsilon_{i}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I allow for heterogeneous marginal medal effects in all probability specificatio
+ns.
+ Table 8 presents estimates from a linear probability model using marginal
+ non-medalists and marginal medalists, Distance -1 and Distance 0.
+ The full sample across all eras is used.
+ Columns (3), (6), and (9) provide weak evidence, significant at the 10
+ percent level, that female marginal medal winners are several percentage
+ points more likely to attend a future Olympics or earn a future medal compared
+ to female non-medalists.
+ The F-test in column (3) indicates that male medalists are significantly
+ less likely to attend a future Olympics compared to their non-medalist
+ counterparts, mirroring the column (3) result discussed previously in Table
+ 4.
+ Examining heterogeneity among non-medalists, male non-medalists are 4.4%
+ more likely to earn a future medal and 3.6% more likely to earn a future
+ gold medal compared to their female counterparts.
+\end_layout
+
+\begin_layout Standard
+To enforce probabilities between zero and one, a logistic regression model
+ is estimated and displayed in Table 9.
+ Average marginal effects corresponding to these estimates are provided
+ in Table 10.
+ Average marginal effects are close in size to the effects for the linear
+ probability model, so similar conclusions can be reached with either model.
+ One notable difference is that column (6) in Table 10 has a female marginal
+ medal effect for earning a future medal significant at the one percent
+ level.
+ Female marginal medalists are 5.4% more likely to earn a future medal compared
+ to their female non-medalist counterparts.
+\end_layout
+
+\begin_layout Standard
+Panel A of Table 11 returns to the linear probability model, splitting the
+ sample by eras.
+ To lessen the issue of censored outcome variables, I remove Rio 2016 and
+ PyeongChang 2018 from the modern era, so athletes who debut during these
+ games are not included in my sample.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The binary outcomes are still censored since the full Olympic careers of
+ recent debut athletes are not observed.
+ However, there is less censorship than before since I only need to observe
+ the next time the athlete competes in the Olympics, the next medal earned
+ of any kind, and the next gold medal earned to decide binary outcome values.
+\end_layout
+
+\end_inset
+
+ The time period 1948-1992 drives outcomes in Table 8.
+ The modern era from 1994-2014 finds no evidence of marginal medalists doing
+ any better than marginal non-medalists.
+ Male and female athletes do not systematically differ in outcomes either.
+\end_layout
+
+\begin_layout Subsubsection*
+High Performers
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Comparisons for non-medalists and high performers are conducted using linear
+ probability models.
+ Panel B of Table 11 provides the comparison between non-medalists with
+ Distance -1 and medalists with Distance 1.
+ Panel C of Table 11 uses medalists with Distance 2.
+ For both panels, the time period 1948-1992 indicates that earning a medal
+ boosts the probability of earning a future medal, including a gold medal.
+ Loosely speaking, female silver and gold medalists appear more likely to
+ attend a future Olympics compared to their 4th place counterparts during
+ this era.
+ In the modern era, female silver medalists and gold medalists are 3.9% and
+ 14.6%, respectively, more likely to win a future gold medal compared to
+ their non-medalist counterparts.
+ Likewise, male silver medalists and gold medalists are 4% and 9.6% more
+ likely to win a future gold medal compared to their male counterparts.
+\end_layout
+
+\begin_layout Standard
+Once again, there is positive omitted variable bias for coefficients of
+ MarginalMedal, precluding a causal interpretation for high performers.
+ Yet high performer comparisons help frame the limited difference in outcomes
+ for 4th place finishers and bronze medalists.
+\end_layout
+
+\begin_layout Section
+Discussion
+\end_layout
+
+\begin_layout Subsubsection*
+Marginal Medalists
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Marginal medalists and non-medalists have similar career trajectories in
+ terms of Olympic results.
+ Despite missing out on a debut medal, 4th place finishers perform no worse
+ than 3rd place finishers in subsequent Olympic Games.
+\end_layout
+
+\begin_layout Standard
+There are several ways to interpret this finding.
+ If marginal medalists are typically higher in ability compared to marginal
+ non-medalists, then winning a medal may have a predominantly negative impact.
+ As mentioned in the introduction, gold medalists and champion athletes
+ in various sports have been documented to face greater difficulty preparing
+ for and performing during future competitions 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "jackson1998lifei,jackson1998lifeii,kreiner1993winning"
+literal "false"
+
+\end_inset
+
+.
+ Debut medalists may face higher expectations in subsequent Olympic Games.
+ Athletic performance tends to suffer if elevated expectations result in
+ higher cognitive anxiety 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "woodman2003relative"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Counterfactual thinking may also play a role.
+ Bronze medalists have been documented to appear more joyful compared to
+ silver medalists when presented their medals 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "medvec1995less"
+literal "false"
+
+\end_inset
+
+.
+ This is because Bronze medalists tend to compare their performances with
+ 4th place finishers, while silver medalists with higher expectations compare
+ themselves to gold medalists 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "mcgraw2005expectations"
+literal "false"
+
+\end_inset
+
+.
+ 4th place finishers, aware of how close they came to winning a medal, may
+ be less content and more motivated to improve than 3rd place finishers:
+ 
+\begin_inset Quotes eld
+\end_inset
+
+an up-and-comer who lost by such a narrow margin might consider it a symbolic
+ victory and motivation to work harder,
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "the_new_york_times_2014"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Another interpretation of these results posits that marginal medalists are
+ indeed similar in ability to marginal non-medalists, yet winning a medal
+ has hardly any impact on one's career at all.
+\end_layout
+
+\begin_layout Quotation
+\noindent
+\begin_inset Quotes eld
+\end_inset
+
+Ronda Rousey won the Bronze Medal in judo at the Beijing Olympics in 2008.
+ She was the first American woman to do so.
+ The medal itself would have brought her a measly four bucks, if she had
+ been crass enough to sell it.
+ Her reward from the United States Olympic Committee for her unique accomplishme
+nt was, as she put it, 'Ten grand and a handshake.' A few months after she
+ came home from Beijing, she was living in her car.
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "newman2017should"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+No impact for winning a medal seems to be a stretch, but it could be the
+ case that an athlete must consistently win medals to develop a strong reputatio
+n, garnering greater support and financial opportunities over time.
+ My analysis focuses on Bronze medalists and 4th place finishers.
+ Silver medalists and especially gold medalists likely reap greater rewards
+ for winning a medal.
+ However, I am unable to isolate these effects from bias due to unobserved
+ ability in my current empirical design.
+\end_layout
+
+\begin_layout Subsubsection*
+Olympic Eras
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The length of Olympic careers has increased over time, while the dominance
+ of higher performing debut athletes relative to lower performing ones has
+ risen in later eras.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Appendix Tables A1, A2, and A3 provide summary statistics for each era.
+ See Table 1 for summary statistics for the entire sample period.
+\end_layout
+
+\end_inset
+
+ Higher performing athletes win a disproportionate share of future medals
+ and future gold medals.
+ These descriptive findings as well as evidence from regression estimates
+ reflect the changing nature of Olympic athletes over time.
+ 
+\end_layout
+
+\begin_layout Standard
+Over the past 120 years, the Olympics and sport more broadly has transformed
+ from a pastime associated with wealthy amateurs to a highly competitive,
+ well-funded, and globally experienced phenomenon.
+ Calgary/Seoul 1988 were the first Olympic Games that allowed professional
+ athletes to compete.
+ Though even today, few Olympic athletes aside from superstars and athletes
+ in large sports leagues are considered professionals in the sense that
+ they earn a living from athletics alone.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The retailer Home Depot has employed over 283 United States Olympic athletes
+ since 1992, including gold medalist Derek Parra 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "valenti_2006"
+literal "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Perhaps the results found for the 1948-1992 period are driven by the rising
+ popularity of organized sports and the ability to televise games.
+ These factors enabled male athletes to pursue sport more seriously and
+ as a possible career.
+ Female athletes during much of this era were still routinely discouraged
+ from competing, had less flexible labor options, and had fewer opportunities
+ to remain engaged in sport outside of Olympic years.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset citation
+LatexCommand citep
+key "lirgg1989female"
+literal "false"
+
+\end_inset
+
+ reveals attitudes towards female athletics around the end of this era.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+For a closer look into the inclusion of women in the Olympic Games and their
+ competitive success see 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "noland2016goes"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ This gender inequality likely led to the heterogeneity found.
+\end_layout
+
+\begin_layout Standard
+The modern Olympic era is more diverse and globally inclusive than ever
+ before.
+ It is also far more competitive and efficient in the sense that high ability
+ individuals are more likely to ascend to the podium despite their backgrounds.
+ This era has so far provided equal future prospects for marginal medalists
+ and non-medalists of both genders.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+This paper tests for the benefits accrued by Olympic athletes who marginally
+ win a medal.
+ Olympic debut 4th place finishers, bronze medalists, silver medalists,
+ and gold medalists are compared.
+ 4th place finishers do no worse than their bronze medalist counterparts
+ in the future.
+ This suggests there is typically no net benefit for an athlete's career
+ when that athlete narrowly makes the podium.
+ 4th place finishers are however outperformed by their silver medalist and
+ gold medalist counterparts in the future.
+ Athletes and commentators alike have called 4th place the 
+\begin_inset Quotes eld
+\end_inset
+
+worst place
+\begin_inset Quotes erd
+\end_inset
+
+ to finish in.
+ Yet when it comes to Olympic career trajectory, 4th place is just as good
+ as 3rd.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Acknowledgments
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The author would like to thank Barry Eichengreen, Joaquin Fuenzalida Bello,
+ and students in the Berkeley Economics 191 class for comments.
+\end_layout
+
+\begin_layout Subsubsection*
+Declaration of conflicting interests 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The author declares that there is no conflict of interest.
+\end_layout
+
+\begin_layout Subsubsection*
+Funding 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+This research received no specific grant from any funding agency in the
+ public, commercial, or not-for-profit sectors.
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing double
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "olympics"
+options "/Users/richardgong/LyX_additions/aea/aea"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_descriptive.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_constant10.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_hets10.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_hetg10.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_sshetg10.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_hetg_comp.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_sshetg_comp.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_lpm10.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_logit10.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_logit10_ame.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_sslpm_comp.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p1_debuts.png
+	width 75page%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Individual Event Debut Athletes
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Appendix
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_descriptive_bww2.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_descriptive_aww2.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p1_descriptive_stag.tex"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,40 @@
+
+\begin{table}[!htbp] \centering 
+  \caption{Home Field Effect (-2 to 2)} 
+  \label{} 
+\footnotesize 
+\begin{tabular}{@{\extracolsep{-15pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & \multicolumn{6}{c}{Change\_Medals\_Per\_Athlete} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)} & \multicolumn{1}{c}{(6)}\\ 
+\hline \\[-1.8ex] 
+ Distance -1 & -0.017 & -0.017 & -0.019 & -0.019 & -0.129 & -0.129 \\ 
+  & t = -0.416 & t = -1.675 & t = -0.432 & t = -1.698 & t = -1.445 & t = -1.640 \\ 
+  Distance 0 & 0.041 & 0.041 & 0.040 & 0.040 & -0.004 & -0.004 \\ 
+  & t = 1.925 & t = 8.355 & t = 1.720 & t = 7.365 & t = -0.081 & t = -0.092 \\ 
+  Distance 1 & -0.059 & -0.059 & -0.065 & -0.065 & -0.145 & -0.145 \\ 
+  & t = -1.238 & t = -6.236 & t = -1.270 & t = -6.017 & t = -1.815 & t = -2.039 \\ 
+  Distance 2 & -0.011 & -0.011 & -0.016 & -0.016 & -0.073 & -0.073 \\ 
+  & t = -0.391 & t = -1.798 & t = -0.505 & t = -2.294 & t = -1.358 & t = -1.556 \\ 
+  Summer & -0.049 & -0.049 & -0.061 & -0.061 & -0.172 & -0.172 \\ 
+  & t = -4.358 & t = -15.126 & t = -3.339 & t = -9.526 & t = -2.372 & t = -2.622 \\ 
+  MaleRatio & -0.030 & -0.030 & 0.015 & 0.015 & -0.100 & -0.100 \\ 
+  & t = -0.524 & t = -1.806 & t = 0.154 & t = 0.506 & t = -0.470 & t = -0.528 \\ 
+  MeanAge & 0.115 & 0.115 & 0.174 & 0.174 & 0.536 & 0.536 \\ 
+  & t = 1.181 & t = 3.570 & t = 1.277 & t = 4.241 & t = 2.634 & t = 3.064 \\ 
+  MeanAgeSquared & -0.002 & -0.002 & -0.004 & -0.004 & -0.010 & -0.010 \\ 
+  & t = -1.247 & t = -3.786 & t = -1.337 & t = -4.484 & t = -2.628 & t = -3.053 \\ 
+  &  &  &  &  &  &  \\ 
+Country fixed effects & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} \\ 
+\textit{N} & \multicolumn{1}{c}{199} & \multicolumn{1}{c}{199} & \multicolumn{1}{c}{199} & \multicolumn{1}{c}{199} & \multicolumn{1}{c}{199} & \multicolumn{1}{c}{199} \\ 
+Adjusted R$^{2}$ & \multicolumn{1}{c}{0.083} & \multicolumn{1}{c}{0.083} & \multicolumn{1}{c}{-0.013} & \multicolumn{1}{c}{-0.013} & \multicolumn{1}{c}{0.077} & \multicolumn{1}{c}{0.077} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Notes:} & \multicolumn{6}{l}{t-statistics in brackets. (1), (2), (3), and (4) weight by CohortSize. (5) and (6) are} \\ 
+ & \multicolumn{6}{l}{unweighted. Standard errors for odd columns are clustered at the Country level.} \\ 
+ & \multicolumn{6}{l}{Standard errors for even columns are wild bootstrap, using Country blocks and} \\ 
+ & \multicolumn{6}{l}{1000 repetitions. There are 25 Country clusters. Critical values for the t-distribution} \\ 
+ & \multicolumn{6}{l}{with 24 degrees of freedom: 1.71 (10\% level), 2.06 (5\% level), 2.80 (1\% level).} \\ 
+\end{tabular} 
+\end{table} 

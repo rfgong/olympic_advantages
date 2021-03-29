@@ -1,0 +1,42 @@
+
+\begin{sidewaystable}[!htbp] \centering 
+  \caption{Subsample Gender Heterogeneous Medal Effect (-1 vs. 2)} 
+  \label{} 
+\footnotesize 
+\begin{tabular}{@{\extracolsep{-15pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & \multicolumn{3}{c}{Future Olympics} & \multicolumn{3}{c}{Future Medals} & \multicolumn{3}{c}{Future Gold Medals} \\ 
+ & \multicolumn{1}{c}{1896-1936} & \multicolumn{1}{c}{1948-1992} & \multicolumn{1}{c}{1994-2018} & \multicolumn{1}{c}{1896-1936} & \multicolumn{1}{c}{1948-1992} & \multicolumn{1}{c}{1994-2018} & \multicolumn{1}{c}{1896-1936} & \multicolumn{1}{c}{1948-1992} & \multicolumn{1}{c}{1994-2018} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)} & \multicolumn{1}{c}{(6)} & \multicolumn{1}{c}{(7)} & \multicolumn{1}{c}{(8)} & \multicolumn{1}{c}{(9)}\\ 
+\hline \\[-1.8ex] 
+ MarginalMedal & -0.025 & 0.219^{***} & 0.054 & 0.012 & 0.390^{***} & 0.265^{***} & -0.002 & 0.171^{***} & 0.191^{***} \\ 
+  & (0.065) & (0.078) & (0.070) & (0.093) & (0.131) & (0.062) & (0.051) & (0.057) & (0.055) \\ 
+  Male & -0.028 & 0.189^{**} & -0.051 & 0.010 & 0.205^{***} & -0.026 & 0.013 & 0.100^{***} & 0.052 \\ 
+  & (0.100) & (0.090) & (0.073) & (0.118) & (0.017) & (0.111) & (0.058) & (0.013) & (0.054) \\ 
+  MarginalMedal*Male (D) & 0.141 & -0.202^{***} & 0.040 & 0.175 & -0.225^{*} & -0.045^{***} & 0.078 & -0.071 & -0.103^{***} \\ 
+  & (0.162) & (0.051) & (0.069) & (0.136) & (0.120) & (0.008) & (0.055) & (0.055) & (0.038) \\ 
+  Age & -0.038 & 0.024 & -0.112 & -0.045 & 0.031 & -0.171^{**} & -0.025^{***} & -0.004 & -0.067 \\ 
+  & (0.026) & (0.038) & (0.084) & (0.027) & (0.043) & (0.086) & (0.009) & (0.027) & (0.049) \\ 
+  AgeSquared & 0.0005 & -0.001 & 0.001 & 0.001 & -0.001 & 0.003 & 0.0003^{**} & -0.0001 & 0.001 \\ 
+  & (0.0003) & (0.001) & (0.002) & (0.0004) & (0.001) & (0.002) & (0.0001) & (0.001) & (0.001) \\ 
+  Events & 0.056^{***} & -0.001 & -0.040 & 0.070^{**} & 0.142^{**} & 0.083^{*} & 0.047^{*} & 0.076^{***} & 0.015 \\ 
+  & (0.019) & (0.030) & (0.033) & (0.030) & (0.056) & (0.043) & (0.024) & (0.028) & (0.035) \\ 
+  TeamEvent & 0.048 & 0.023 & 0.149^{*} & 0.122 & 0.194^{**} & 0.307^{**} & 0.017 & 0.040 & 0.157 \\ 
+  & (0.074) & (0.091) & (0.085) & (0.121) & (0.094) & (0.135) & (0.104) & (0.038) & (0.102) \\ 
+  FutureHomeSame & 0.125 & 0.087 & -0.144 & 0.173^{***} & 0.204^{**} & -0.242^{**} & 0.104 & 0.097 & -0.107 \\ 
+  & (0.101) & (0.060) & (0.138) & (0.048) & (0.100) & (0.112) & (0.067) & (0.064) & (0.071) \\ 
+  FutureHomeDiff & -0.045 & 0.140^{***} & 0.007 & -0.206^{*} & 0.072 & -0.050 & -0.058 & 0.029 & 0.006 \\ 
+  & (0.099) & (0.043) & (0.157) & (0.114) & (0.096) & (0.100) & (0.071) & (0.061) & (0.035) \\ 
+  &  &  &  &  &  &  &  &  &  \\ 
+Year fixed effects & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} \\ 
+Country fixed effects & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} \\ 
+F-test: MarginalMedal+D = 0 & \multicolumn{1}{c}{0.215} & \multicolumn{1}{c}{0.818} & \multicolumn{1}{c}{0.308} & \multicolumn{1}{c}{0.011} & \multicolumn{1}{c}{0.001} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0.067} & \multicolumn{1}{c}{0.001} & \multicolumn{1}{c}{0.009} \\ 
+\textit{N} & \multicolumn{1}{c}{831} & \multicolumn{1}{c}{1,927} & \multicolumn{1}{c}{1,221} & \multicolumn{1}{c}{831} & \multicolumn{1}{c}{1,927} & \multicolumn{1}{c}{1,221} & \multicolumn{1}{c}{831} & \multicolumn{1}{c}{1,927} & \multicolumn{1}{c}{1,221} \\ 
+Adjusted R$^{2}$ & \multicolumn{1}{c}{0.101} & \multicolumn{1}{c}{0.076} & \multicolumn{1}{c}{0.219} & \multicolumn{1}{c}{0.107} & \multicolumn{1}{c}{0.089} & \multicolumn{1}{c}{0.197} & \multicolumn{1}{c}{0.055} & \multicolumn{1}{c}{0.062} & \multicolumn{1}{c}{0.118} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Notes:} & \multicolumn{9}{l}{*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.} \\ 
+ & \multicolumn{9}{l}{F-test p-value reported. The subsample time periods are Before WWII: 1896-1936, After WWII: 1948-1992, Staggered: 1994-2018.} \\ 
+\end{tabular} 
+\end{sidewaystable} 

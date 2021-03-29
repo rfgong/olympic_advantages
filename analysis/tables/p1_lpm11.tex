@@ -1,0 +1,41 @@
+
+\begin{sidewaystable}[!htbp] \centering 
+  \caption{Linear Probability Medal Effect (-1 vs. 1)} 
+  \label{} 
+\footnotesize 
+\begin{tabular}{@{\extracolsep{-15pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & \multicolumn{3}{c}{Attended Future Olympics} & \multicolumn{3}{c}{Earned Future Medal} & \multicolumn{3}{c}{Earned Future Gold Medal} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)} & \multicolumn{1}{c}{(6)} & \multicolumn{1}{c}{(7)} & \multicolumn{1}{c}{(8)} & \multicolumn{1}{c}{(9)}\\ 
+\hline \\[-1.8ex] 
+ MarginalMedal & 0.034 & 0.048^{*} & 0.064^{**} & 0.093^{***} & 0.101^{***} & 0.109^{***} & 0.058^{***} & 0.061^{***} & 0.063^{***} \\ 
+  & (0.031) & (0.025) & (0.026) & (0.031) & (0.028) & (0.031) & (0.020) & (0.018) & (0.020) \\ 
+  Male & -0.031 & 0.038^{*} & 0.042^{*} & 0.013 & 0.039^{*} & 0.044^{**} & 0.024^{*} & 0.038^{***} & 0.043^{***} \\ 
+  & (0.032) & (0.020) & (0.022) & (0.023) & (0.020) & (0.022) & (0.013) & (0.014) & (0.013) \\ 
+  MarginalMedal*Male (D) & -0.052 & -0.063^{***} & -0.072^{***} & -0.047 & -0.051 & -0.059^{*} & -0.036 & -0.037 & -0.042^{*} \\ 
+  & (0.033) & (0.023) & (0.022) & (0.035) & (0.033) & (0.033) & (0.024) & (0.023) & (0.023) \\ 
+  Age & -0.002 & -0.018^{***} & -0.026^{***} & -0.026^{***} & -0.032^{***} & -0.037^{***} & -0.014^{***} & -0.018^{***} & -0.021^{***} \\ 
+  & (0.008) & (0.007) & (0.007) & (0.006) & (0.007) & (0.006) & (0.003) & (0.004) & (0.004) \\ 
+  AgeSquared & -0.0002 & 0.0002^{*} & 0.0003^{***} & 0.0003^{**} & 0.0004^{***} & 0.0005^{***} & 0.0001^{***} & 0.0002^{***} & 0.0002^{***} \\ 
+  & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.00005) & (0.0001) & (0.0001) \\ 
+  Events & 0.019^{*} & 0.025^{***} & 0.023^{**} & 0.014 & 0.016 & 0.015 & 0.005 & 0.006 & 0.005 \\ 
+  & (0.010) & (0.009) & (0.009) & (0.010) & (0.011) & (0.011) & (0.007) & (0.007) & (0.007) \\ 
+  TeamEvent & 0.019 & 0.012 & 0.00000 & 0.089^{***} & 0.086^{**} & 0.083^{**} & 0.077^{***} & 0.077^{***} & 0.075^{***} \\ 
+  & (0.027) & (0.033) & (0.033) & (0.034) & (0.036) & (0.036) & (0.022) & (0.022) & (0.021) \\ 
+  FutureHomeSame & -0.018 & -0.046^{*} & 0.006 & 0.040^{**} & 0.021^{*} & 0.025^{*} & 0.041^{***} & 0.037^{***} & 0.029^{**} \\ 
+  & (0.035) & (0.025) & (0.020) & (0.016) & (0.011) & (0.015) & (0.008) & (0.009) & (0.013) \\ 
+  FutureHomeDiff & -0.022 & -0.057 & 0.016 & 0.011 & -0.004 & 0.007 & -0.0003 & -0.002 & -0.012 \\ 
+  & (0.043) & (0.048) & (0.036) & (0.021) & (0.021) & (0.026) & (0.015) & (0.015) & (0.024) \\ 
+  &  &  &  &  &  &  &  &  &  \\ 
+Year fixed effects & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{Yes} \\ 
+Country fixed effects & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} \\ 
+F-test: MarginalMedal+D = 0 & \multicolumn{1}{c}{0.368} & \multicolumn{1}{c}{0.432} & \multicolumn{1}{c}{0.636} & \multicolumn{1}{c}{0.002} & \multicolumn{1}{c}{0.001} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0.057} & \multicolumn{1}{c}{0.037} & \multicolumn{1}{c}{0.078} \\ 
+\textit{N} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} & \multicolumn{1}{c}{3,924} \\ 
+Adjusted R$^{2}$ & \multicolumn{1}{c}{0.018} & \multicolumn{1}{c}{0.147} & \multicolumn{1}{c}{0.166} & \multicolumn{1}{c}{0.049} & \multicolumn{1}{c}{0.089} & \multicolumn{1}{c}{0.087} & \multicolumn{1}{c}{0.038} & \multicolumn{1}{c}{0.057} & \multicolumn{1}{c}{0.060} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Notes:} & \multicolumn{9}{l}{*** denotes significance at 1 percent, ** at 5 percent, and * at 10 percent. Standard errors are clustered at the Year-Country level.} \\ 
+ & \multicolumn{9}{l}{F-test p-value reported.} \\ 
+\end{tabular} 
+\end{sidewaystable} 

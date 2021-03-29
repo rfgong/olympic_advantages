@@ -1,0 +1,1386 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{dcolumn}
+\usepackage{rotating}
+\usepackage{abstract}
+\AtBeginDocument{\addto{\captionsenglish}{\renewcommand{\abstractname}{}}}
+\end_preamble
+\use_default_options true
+\begin_modules
+graphicboxes
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "times" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing double
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date true
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Olympic Games Home Field Advantage: 
+\begin_inset Newline newline
+\end_inset
+
+Country Cohort Analysis 
+\end_layout
+
+\begin_layout Author
+Richard Gong
+\size normal
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+e-mail: r_gong@berkeley.edu
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+UC Berkeley
+\end_layout
+
+\begin_layout Quote
+\begin_inset space \qquad{}
+\end_inset
+
+
+\size small
+This paper presents evidence on whether Olympic host country athletes experience
+ a home field advantage, using a novel approach that studies cohorts of
+ athletes who compete in multiple Olympic Games.
+ Olympedia’s comprehensive data set spanning Athens 1896 to PyeongChang
+ 2018 is used.
+ An Olympic team with 100 athletes is estimated to win 4.4 more medals, including
+ 2.6 more gold medals, when competing at home.
+ The home field advantage is stronger for subjective sports.
+\end_layout
+
+\begin_layout Quote
+
+\size small
+\emph on
+Keywords: Olympics, medal, home advantage
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Home field advantage has been well-documented across sports.
+ A 2010 meta-analysis finds a 95% confidence interval of [0.590, 0.618] for
+ the win rate of a home competitor 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "jamieson2010home"
+literal "false"
+
+\end_inset
+
+.
+ The same study reports that higher pressure competition tends to increase
+ the home field advantage.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "legaz2013home"
+literal "false"
+
+\end_inset
+
+ review three decades of research, and discuss various channels, all contested
+ to some extent, that may contribute to a home field advantage.
+ The most compelling channels include crowd influence on referee and judge
+ decision making, and improved player confidence and motivation at home.
+ Weaker channels include familiarity of home athletes with competition facilitie
+s, travel fatigue for away athletes, and national pride for home athletes.
+ 
+\end_layout
+
+\begin_layout Standard
+Past studies of the home field advantage in the Olympic context report mixed
+ results.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "balmer2001home"
+literal "false"
+
+\end_inset
+
+ find a home field advantage in the Winter Olympic Games, which is stronger
+ for subjective sports.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "balmer2003modelling"
+literal "false"
+
+\end_inset
+
+ analyze individual events and find a home field advantage for only subjective
+ sports.
+ A recent contribution by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "pettigrew2016hosting"
+literal "false"
+
+\end_inset
+
+ suggests a multitude of past country level research designs may be unreliable
+ due to omitting time-varying economic confounders in single country analysis,
+ not accounting for relaxed host country athlete qualification, or including
+ countries that have never hosted the Olympics in the non-host comparison
+ group.
+ Pettigrew & Reiche address these issues by restricting their sample to
+ only countries that have hosted the Olympics.
+ They pair outcomes of each host country in the host year with outcomes
+ in the immediately preceding games, limiting the extent to which time varying
+ confounders can change.
+ No host advantage is found for winning medals.
+ Only host athlete attendance is found to increase, which can be attributed
+ in part to automatic qualifications for host athletes.
+ Another recent contribution by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "wilson2018comparative"
+literal "false"
+
+\end_inset
+
+ measures the host advantage in terms of "market share", which is a country’s
+ medal count relative to the total number of medals awarded that Olympics.
+ In the "market share" calculation medals have different weights (gold=3,
+ silver=2, bronze=1).
+ There is a statistically significant host country advantage for both the
+ Olympic and Paralympic Games.
+\end_layout
+
+\begin_layout Standard
+I revisit the Olympic home field advantage using a larger data set, using
+ a novel methodology that allows me to better identify the home field advantage.
+ The rest of the paper proceeds as follows.
+ Section 2 describes the data source.
+ Section 3 details the empirical strategy and presents results.
+ Section 4 concludes.
+\end_layout
+
+\begin_layout Section
+Data Source
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The main data used comes from Olympedia, a website backed by the International
+ Olympic Committee (IOC).
+ Athlete results are available from the 1896 Athens Summer Olympics to the
+ 2018 PyeongChang Winter Olympics.
+ 28 Summer Olympic Games and 23 Winter Olympic Games are included in this
+ time span.
+ There are 275,808 results across 132,283 athletes.
+ Information on athlete biological sex, nationality, and date of birth are
+ available.
+ Delayed disqualifications due to violations such as doping are reflected
+ in the results.
+\end_layout
+
+\begin_layout Section
+Host Countries
+\end_layout
+
+\begin_layout Subsection
+Threats to Validity
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+ To properly identify the home field advantage for host athletes, three
+ main threats to validity must be addressed.
+ The first threat to validity arises when defining treatment and comparison
+ countries.
+ To identify a host country effect, both the treated country and counterfactual,
+ comparison countries need to have the possibility of being assigned to
+ either group.
+ That is to say, it would be inaccurate to include comparison countries
+ that have not hosted the Olympics, and are unlikely to ever do so given
+ geographical size or climate constraints.
+ As a result, I limit my analysis to only countries that have hosted the
+ Olympics at least once.
+\end_layout
+
+\begin_layout Standard
+The second threat concerns how a country's performance is measured.
+ Using a country's total medal count or medals per athlete could seem like
+ obvious choices for measurement.
+ Yet, both measures have drawbacks.
+ The size of Olympic country teams has trended upwards over time as the
+ Olympic Games expands with new events.
+ In addition, Olympic host nations have automatic qualification for their
+ athletes in both individual and team events 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "pettigrew2016hosting"
+literal "false"
+
+\end_inset
+
+, inflating host athlete attendance.
+ Only the medals per athlete measure accounts for growing teams, yet it
+ does not address omitted variables bias introduced by relaxed host qualificatio
+n rules.
+ Automatic qualification may permit extra host athletes of lower ability
+ to compete, creating a downwards bias in the medals per athlete measure
+ during a host year.
+ 
+\end_layout
+
+\begin_layout Standard
+The third threat to validity also relates to how a country's performance
+ is measured.
+ The Olympic context is unique in that home field and away field observations
+ are separated by four years due to the Olympic cycle.
+ Four years provides ample time for athlete turnover on a country's Olympic
+ roster.
+ This turnover must be addressed.
+ After all, how can one reliably assess home field advantage if a team's
+ players are different when playing away and at home.
+ 
+\end_layout
+
+\begin_layout Standard
+To address both the second and third threats to validity, I adopt what I
+ call a country cohort approach.
+ I first create exhaustive pairs of consecutive Olympic Games of the same
+ season.
+ Then, for each country in my sample, I identify athletes spanning both
+ Olympic Games in each given pair.
+ The spanning athletes are grouped by country forming country cohorts.
+ An example cohort would be United States athletes who compete in both London
+ 2012 and Rio 2016.
+ Country cohort athletes are fixed between two Olympic Games by definition.
+ This resolves the third threat to validity since turnover is nullified,
+ though age must be controlled for.
+ The two main cohort performance measures are change in medals per athlete
+ and change in medals per event contested.
+ Change is defined over the two Olympic Games a cohort spans.
+ Only results from individual events will be used for performance measurement,
+ as team events are still vulnerable to confounding due to turnover.
+ The second threat to validity is now also addressed.
+ Cohort size is fixed between two Olympic Games, so a one time influx of
+ athletes due to hosting gets cut out and does not downwards bias the performanc
+e measure.
+ Any new athletes of high ability will be included in a country's next cohort,
+ which starts in the hosted games and ends with a future away games.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+A country cohort that ends with a hosted Olympics typically has different
+ athletes than the subsequent cohort that starts with the hosted Olympics.
+ Yet, the home field advantage still has a clear interpretation and is testable
+ in the context of changing cohort members.
+ Suppose the home field advantage exists, then the cohort entering the hosted
+ games would have a positive change in its performance measure, and the
+ cohort leaving the hosted games would have a negative change in its performance
+ measure.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Sample Construction & Descriptive Analysis
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+I construct a data set of country cohorts for all countries that have hosted
+ the Olympics.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+I consider Australia the sole host country for the Summer Olympic Games
+ of 1956, since only equestrian events were held in Sweden.
+\end_layout
+
+\end_inset
+
+ Each cohort observation is uniquely identified using country, season of
+ games, and the pair of Olympics the cohort spans.
+ I create a time index called Distance to identify how far each cohort is
+ offset from its country's hosted Olympic Games.
+ One unit of Distance corresponds to one Olympic Games of relevant season.
+ Distance zero is used when the cohort's second games is at home, and Distance
+ one is used when the cohort's first games is at home.
+ Distance is determined separately for a country's winter cohorts and summer
+ cohorts.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+If a country has only been a summer host, then that county's winter cohorts
+ have undefined Distance.
+ For example, Australia is only a summer host.
+ A similar argument applies to countries that have only been winter hosts.
+ I remove all cohorts with undefined distance from my sample.
+\end_layout
+
+\end_inset
+
+ When a cohort is located between two hosted Olympics, it is assigned the
+ Distance of minimum absolute value.
+ In other words, the cohort is assigned Distance based on the closer of
+ two hosted Olympics.
+\end_layout
+
+\begin_layout Standard
+Using a cohort's individual event results I create four outcome measures
+ for each cohort observation: change in medals per athlete, change in medals
+ per event contested, change in gold medals per athlete, change in gold
+ medals per event contested.
+ The reason behind using per event contested is that a cohort's athletes
+ may opt to compete in a different number of events during the first and
+ second cohort Olympics, so events contested may be the preferable denominator.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Here is an example using the different denominators.
+ Consider a two athlete summer cohort for country X defined on {Olympics
+ 1, Olympics 2}.
+ In Olympics 1 athlete "A" competes in two events and athlete "B" which
+ competes in three events, "A" wins 1 medal and "B" wins 2 medals.
+ Then in Olympics 2 athlete "A" competes in three events and athlete "B"
+ competes in four events, again "A" wins 1 medal and "B" wins 2 medals.
+ 
+\begin_inset Formula $\triangle Medals/Athlete=$
+\end_inset
+
+
+\begin_inset Formula $\frac{3}{2}-\frac{3}{2}=0$
+\end_inset
+
+ and 
+\begin_inset Formula $\triangle Medals/Event=$
+\end_inset
+
+
+\begin_inset Formula $\frac{3}{7}-\frac{3}{5}=\frac{-6}{35}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 1 plots change in medal outcomes for all summer host nations, and
+ Figure 2 does the same for winter host nations.
+ Country cohort trends appear to exhibit volatility over time and are centered
+ near zero change.
+ Figure 3 zooms in on the host time period, using Distances -1, 0, and 1.
+ Visually, there appears to be little evidence of a strong home field advantage.
+ Few countries have cohort trends exhibiting a large spike at Distance 0
+ and a decrease at Distance 1, which would indicate a home field advantage.
+ Figures 4, 5, and 6 tell the same visual story using change in gold medal
+ outcomes.
+ It is important to note that these visual depictions do not incorporate
+ control variables or account for differing cohort sizes, which contribute
+ to uneven volatility among country cohort series.
+\end_layout
+
+\begin_layout Subsection
+Country Cohorts
+\end_layout
+
+\begin_layout Subsubsection*
+Home Field Effect
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+I estimate the host country, home field advantage using an event study approach,
+ pooling summer and winter cohorts.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Formula 
+\begin{equation}
+Outcomes_{cst}=\alpha_{c}+\sum_{k}\beta_{k}I(Distance=k)_{t}+X_{cst}\gamma+\varepsilon_{cst}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $c$
+\end_inset
+
+ is an index for country, 
+\begin_inset Formula $s$
+\end_inset
+
+ is an index for season, and 
+\begin_inset Formula $t$
+\end_inset
+
+ is an index for Distance.
+ 
+\begin_inset Formula $Outcomes_{cst}$
+\end_inset
+
+ can be either 
+\begin_inset Formula $\triangle Medals/Athlete_{cst}$
+\end_inset
+
+, 
+\begin_inset Formula $\triangle Medals/Event_{cst}$
+\end_inset
+
+, 
+\begin_inset Formula $\triangle Golds/Athlete_{cst}$
+\end_inset
+
+, or 
+\begin_inset Formula $\triangle Golds/Event_{cst}$
+\end_inset
+
+.
+ Country fixed effects 
+\begin_inset Formula $\alpha_{c}$
+\end_inset
+
+ account for country differences in mean outcomes.
+ 
+\begin_inset Formula $X_{cst}$
+\end_inset
+
+ is a vector of controls including 
+\begin_inset Formula $Summer_{s}$
+\end_inset
+
+, 
+\begin_inset Formula $MaleRatio_{cst}$
+\end_inset
+
+, 
+\begin_inset Formula $MeanAge_{cst}$
+\end_inset
+
+ and 
+\begin_inset Formula $MeanAge_{cst}^{2}$
+\end_inset
+
+.
+ 
+\begin_inset Formula $Summer_{s}$
+\end_inset
+
+ is a dummy for the cohort's season being summer, 
+\begin_inset Formula $MaleRatio_{cst}$
+\end_inset
+
+ is the number of male athletes divided by total number of athletes, and
+ both age controls are constructed using athlete age in the cohort's first
+ Olympics.
+\end_layout
+
+\begin_layout Standard
+I limit my sample to Distance -2 through Distance 2.
+ This allows me to use Distance -2 as a benchmark in comparisons.
+ There are two additional reasons for this restriction.
+ First, not all countries have Distance values beyond this range, since
+ availability of Distance values depends on how long a country has been
+ participating in the Olympics.
+ Second, larger ranges of Distance would make country fixed effects less
+ reliable.
+ Countries tend to undergo political and economic changes over long spans
+ of time.
+ For example, athlete cohorts for Germany before WWI, around WWII, and today
+ differ greatly in circumstances.
+\end_layout
+
+\begin_layout Standard
+Table 1 presents results for medal outcomes, and Table 2 does the same for
+ gold medal outcomes.
+ Columns (1), (2), (3), and (4) present weighted regressions using 
+\begin_inset Formula $CohortSize_{cst}$
+\end_inset
+
+ as weights.
+ Columns (5) and (6) are unweighted.
+ The odd columns use adjusted clustered standard errors.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The adjustments are the finite cluster correction G/(G-1) and degrees of
+ freedom (N-1)/(N-K) correction.
+\end_layout
+
+\end_inset
+
+ This particular type of clustered standard errors is vulnerable to bias
+ when the number of clusters is small.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "cameron2008bootstrap"
+literal "false"
+
+\end_inset
+
+ find bootstrap standard errors lead to more reliable inference when the
+ number of clusters is small.
+ Since I only have 25 country clusters, I present Rademacher wild bootstrap
+ standard errors, generated using country blocks and 1000 repetitions, for
+ even columns.
+ The bootstrap standard errors are consistently smaller than the clustered
+ standard errors, leading to t-statistics with higher magnitude for even
+ columns.
+ With either type of standard errors, inference is performed using the t-distrib
+ution with no more degrees of freedom than the number of clusters.
+ I present critical values in the table notes.
+\end_layout
+
+\begin_layout Standard
+My preferred estimates are in columns (3) and (4).
+ Trends in the Distance coefficients are consistent with a home field advantage.
+ Since Distance -2 is left out, the remaining Distance coefficients represent
+ difference in means relative to it.
+ Distance -1 has cohorts competing in away games, and does not differ significan
+tly from Distance -2.
+ Distance 0 has a positive coefficient, indicating that cohorts entering
+ a host Olympics experience positive changes in medals won per athlete and
+ medals won per event.
+ Distance 1 has a negative coefficient with a relatively large magnitude,
+ indicating that cohorts leaving a host Olympics lose a home boost when
+ transitioning to an away games.
+ Distance 2 has a negative coefficient of smaller magnitude compared to
+ Distance 1, indicating a slight return to the Distance -2 outcome mean.
+ Statistical significance depends on the type of standard errors used.
+ Bootstrap standard errors lead to Distance 0 and Distance 1 coefficients
+ significant at the one percent level, while clustered standard errors have
+ just the Distance 0 coefficient significant at the ten percent level.
+\end_layout
+
+\begin_layout Standard
+Table 2 also exhibits gold medal outcome trends consistent with the home
+ field advantage.
+ Bootstrap standard errors indicate significance at the one percent level
+ for all Distance coefficients, while clustered standard errors only have
+ significance at the one percent level for Distance 1.
+\end_layout
+
+\begin_layout Subsubsection*
+Shocks to Olympic Attendance
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Due to factors including economic hardship, boycotts, and stricter qualification
+ rules, several Olympic Games exhibit major decreases in attendance.
+ Figure 7 plots the total number of individual event athlete debuts over
+ time.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Olympic Games occur on a four year cycle.
+ The first ever Winter Olympic Games was Chamonix 1924.
+ Up through 1992, the Winter and Summer Olympics were conducted during the
+ same year, in that order.
+ The Winter Olympic Games has since been staggered by two years beginning
+ with Lillehammer 1994.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The Olympic Games were cancelled in 1916 due to WWI, and in 1940 and 1944
+ during WWII.
+\end_layout
+
+\end_inset
+
+ Trends in debut athletes mirror trends for athletes overall.
+ Explanations for major shocks follow.
+\end_layout
+
+\begin_layout Standard
+Lake Placid 1932 and Los Angeles 1932 were hosted in the United States.
+ Amid the Great Depression, several nations were unable to sponsor athletes.
+ Soviet Union military action during the Hungarian Revolution of 1956 led
+ to political tension before the Summer Olympic Games concluded in Melbourne.
+ The International Olympic Committee (IOC) refused to suspend Soviet Union
+ Olympic participation, leading a number of nations to boycott events.
+ Montreal 1976 was boycotted by 29 countries when the IOC did not punish
+ New Zealand for defying a sporting embargo against apartheid South Africa.
+ In 1980, 66 nations boycotted the Summer Olympic Games in Moscow, protesting
+ the Soviet–Afghan War.
+ Lillehammer 1994 introduced stricter qualification rules for the Winter
+ Olympic Games, reducing the number of athletes from countries with warmer
+ climates.
+\end_layout
+
+\begin_layout Standard
+These negative shocks to Olympic Games attendance are problematic for identifyin
+g a home field advantage.
+ When there is weaker competition than usual, it is easier for host country
+ athletes to earn medals regardless of whether a home field advantage exists.
+ As a result, I now drop cohort observations that span Olympic Games experiencin
+g attendance shocks.
+ However, I keep Lillehammer 1994 since limiting the number of lower ability
+ athletes does not make it any easier for host country athletes to win medals.
+ The number of countries in my sample decreases from 25 to 24 as Germany
+ gets removed.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+For Distances relevant to my analysis, German cohorts span the Olympics
+ removed.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tables 3 and 4 present results.
+ Signs and magnitudes for Distance coefficients are similar to those in
+ Tables 1 and 2.
+ Column (3) clustered standard errors scarcely lead to statistically significant
+ Distance coefficients.
+ Only Distance 1 coefficients in Table 4 are significant.
+ Column (4) bootstrap standard errors continue to indicate that Distance
+ 0 and Distance 1 coefficients are significant at the one percent level.
+ Once again the choice of standard errors matters.
+\end_layout
+
+\begin_layout Standard
+To continue to test the robustness of the empirical specification, I place
+ one more limit on my sample.
+ Barring the postponement of Tokyo 2020, since 1948 the Olympic Games has
+ occurred every four years without fail.
+ Prior to 1948, the games were not as consistently attended or even held.
+ 1948 saw Japan and Germany banned from Olympic competition.
+ Both nations were allowed to return in 1952.
+ 
+\end_layout
+
+\begin_layout Standard
+Tables 5 and 6 present results using only Olympic Games cohorts from 1952
+ onwards.
+ Belgium, Finland, Netherlands, and Sweden are removed due to the time restricti
+on, leaving 20 countries.
+ There is now slightly stronger evidence of a home field advantage for gold
+ medal outcomes in Table 6.
+ For gold medal outcomes, column (3) clustered standard errors now have
+ Distance 1 significant at the five percent level.
+\end_layout
+
+\begin_layout Subsubsection*
+
+\series bold
+Subjective vs.
+ Objective Sports
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+I now test for whether the home field advantage differs between subjective
+ and objective sports.
+ I define subjective sporting events as events where some number of points
+ must be awarded by a judge.
+ Everything else is considered objective for the purposes of this paper.
+ Recall that only individual athlete events are being used.
+ A full list of subjective individual sports and objective individual sports
+ in my sample can be found in the Appendix.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+You may notice some very unique individual events that were contested in
+ past Olympic editions.
+ These events end up getting dropped after my sample restrictions.
+\end_layout
+
+\end_inset
+
+ All sample restrictions accumulated thus far are kept.
+\end_layout
+
+\begin_layout Standard
+Results for medal outcomes are presented in Tables 7 and 9, for subjective
+ and objective sports respectively.
+ Table 5 has both types pooled together.
+ Subjective sports have Distance 0 and Distance 1 coefficients higher in
+ magnitude compared to those when the sports are pooled.
+ This suggests a greater home field effect for athletes in subjective sports.
+ Objective sports have corresponding coefficients with lower magnitudes
+ than when the sports are pooled.
+ The home field advantage is weaker for objective sports.
+ Nonetheless, column (4) using bootstrap standard errors shows statistical
+ significance for Distance 0 and Distance 1 coefficients around the one
+ percent level for both types of sports.
+ Column (3) clustered standard errors are not reliably statistically significant
+, however.
+\end_layout
+
+\begin_layout Standard
+Results for gold medal outcomes are presented in Tables 8 and 10 for the
+ two types of sports, with Table 6 pooling.
+ The same patterns appear.
+ The home field advantage is stronger for subjective sports compared to
+ objective sports.
+ Statistical significance still depends on the standard errors used, though
+ clustered standard errors now result in significant coefficients in several
+ cases.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+Suppose a country's Olympic team has 100 athletes.
+ If that Olympic team competes at home, it will win about 4.4 more medals,
+ including 2.6 more gold medals.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Computed using coefficients from Tables 5 and 6.
+\end_layout
+
+\end_inset
+
+ If the team's athletes compete in more subjective sports as opposed to
+ objective sports, this home field advantage will be greater.
+ Nothing beats a home crowd.
+\end_layout
+
+\begin_layout Subsubsection*
+Acknowledgments
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The author would like to thank Barry Eichengreen, Joaquin Fuenzalida Bello,
+ and students in the Berkeley Economics 191 class for comments.
+\end_layout
+
+\begin_layout Subsubsection*
+Declaration of conflicting interests 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+The author declares that there is no conflict of interest.
+\end_layout
+
+\begin_layout Subsubsection*
+Funding 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \qquad{}
+\end_inset
+
+This research received no specific grant from any funding agency in the
+ public, commercial, or not-for-profit sectors.
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing double
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "olympics"
+options "aea"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p2_s_all.png
+	width 90page%
+	scaleBeforeRotation
+	rotateAngle 90
+
+\end_inset
+
+
+\begin_inset Flex Rotatebox
+status open
+
+\begin_layout Plain Layout
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+90
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 25line%
+\end_inset
+
+Figure 1: Summer Cohort Medal Change by Distance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p2_w_all.png
+	width 90page%
+	scaleBeforeRotation
+	rotateAngle 90
+
+\end_inset
+
+
+\begin_inset Flex Rotatebox
+status open
+
+\begin_layout Plain Layout
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+90
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 25line%
+\end_inset
+
+Figure 2: Winter Cohort Medal Change by Distance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p2_marg.png
+	width 85page%
+	scaleBeforeRotation
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+Figure 3: Cohort Medal Change Near Host Distance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p2_s_all_g.png
+	width 90page%
+	scaleBeforeRotation
+	rotateAngle 90
+
+\end_inset
+
+
+\begin_inset Flex Rotatebox
+status open
+
+\begin_layout Plain Layout
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+90
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 25line%
+\end_inset
+
+Figure 4: Summer Cohort Gold Medal Change by Distance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p2_w_all_g.png
+	width 90page%
+	scaleBeforeRotation
+	rotateAngle 90
+
+\end_inset
+
+
+\begin_inset Flex Rotatebox
+status open
+
+\begin_layout Plain Layout
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+90
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 25line%
+\end_inset
+
+Figure 5: Winter Cohort Gold Medal Change by Distance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p2_marg_g.png
+	width 85page%
+	scaleBeforeRotation
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+Figure 6: Cohort Gold Medal Change Near Host Distance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/images/p1_debuts.png
+	width 75page%
+	scaleBeforeRotation
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+Figure 7: Individual Event Debut Athletes
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_mae_22.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_gae_22.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_mae_22_drop.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_gae_22_drop.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_mae_22_drop_1952.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_gae_22_drop_1952.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_mae_22_drop_1952_sub.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_gae_22_drop_1952_sub.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_mae_22_drop_1952_obj.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset include
+LatexCommand input
+filename "/Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/tables/p2_gae_22_drop_1952_obj.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Appendix
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset External
+	template PDFPages
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/Subjective Individual Sports.pdf
+	extra LaTeX "pages=-"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset External
+	template PDFPages
+	filename /Users/richardgong/Desktop/Berkeley/191/olympic_advantages/analysis/Objective Individual Sports.pdf
+	extra LaTeX "pages=-"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
